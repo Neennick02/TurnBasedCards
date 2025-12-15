@@ -1,9 +1,14 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxHealth = 100;
-    private int _health;
+    [SerializeField] Image healthBarImage;
+    [SerializeField] TextMeshProUGUI healthText;
+
+    [SerializeField]private int _health;
     
 
 
@@ -16,8 +21,14 @@ public class PlayerHealth : MonoBehaviour
     {
         if(_health < 0)
         {
-            //die
+            Debug.Log("Player " + gameObject.name + "died");
         }
+        if(healthText != null)
+        {
+            healthText.text = _health.ToString();
+        }
+
+        healthBarImage.fillAmount =(float) _health / _maxHealth;
     }
 
     public void TakeDamageOrHeal(int amount)
@@ -25,5 +36,13 @@ public class PlayerHealth : MonoBehaviour
         _health += amount;
     }
 
+    public int ReturnHealth()
+    {
+        return _health;
+    }
 
+    public int ReturnMaxHealth()
+    {
+        return _maxHealth;
+    }
 }
