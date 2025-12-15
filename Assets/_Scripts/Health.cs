@@ -4,7 +4,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int _maxHealth = 100;
     private int _health;
-
+    
 
 
     private void Start()
