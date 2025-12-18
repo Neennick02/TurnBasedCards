@@ -7,18 +7,22 @@ public class EnemyDeck : MonoBehaviour
     [SerializeField] private TurnManager turnManager;
 
     private Health _healthScript;
+    private HealthPopup healthPopup;
 
-    [SerializeField] private List<Health> opponentsHealth = new List<Health>();
+    [SerializeField] private Health _playerHealth;
 
     private void Start()
     {
         _healthScript = GetComponent<Health>();
+        healthPopup = GetComponent<HealthPopup>();
     }
 
 
     public void UseTurn()
     {
-        if(_healthScript.ReturnHealth() < _healthScript.ReturnMaxHealth())
+        StartCoroutine(Wait());
+
+        if (_healthScript.ReturnHealth() < _healthScript.ReturnMaxHealth())
         {
             int healthAmount = Random.Range(10, 20);
             Heal(healthAmount);
@@ -28,24 +32,23 @@ public class EnemyDeck : MonoBehaviour
             int damageAmount = Random.Range(10, 20);
             Attack(damageAmount);
         }
-
-        StartCoroutine(Wait());
+        turnManager.ChangeTurn();
     }
 
     private IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1);
-        turnManager.ChangeTurn();
+        float waitTime = Random.Range(0.3f, 2f);
+        yield return new WaitForSeconds(waitTime);
     }
 
     private void Attack(int amount)
     {
         Debug.Log(gameObject.name + "is attacking " + amount + "points");
 
-        //find enemy to attack
-        Health randomHealth = opponentsHealth[Random.Range(0, opponentsHealth.Count)];
+        _playerHealth.TakeDamageOrHeal(-amount);
 
-        randomHealth.TakeDamageOrHeal(-amount);
+        Vector3 playerPosition = _playerHealth.transform.position;
+        healthPopup.Create(playerPosition, amount, true);
     }
 
     private void Heal(int amount)
@@ -53,5 +56,7 @@ public class EnemyDeck : MonoBehaviour
         Debug.Log(gameObject.name + "is healing " + amount + "points");
 
         _healthScript.TakeDamageOrHeal(amount);
+
+        healthPopup.Create(transform.position, amount, false);
     }
 }

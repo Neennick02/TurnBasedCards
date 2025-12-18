@@ -15,13 +15,11 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private Button _nextTurnButton;
 
 
-    [SerializeField] private List<EnemyDeck> _enemyDecks = new List<EnemyDeck>();
+    [SerializeField] private EnemyDeck _enemyDeck;
     enum Turns
     {
         Player,
-        Opponent1,
-        Opponent2,
-        Opponent3
+        Ai
     }
     private void Start()
     {
@@ -34,7 +32,7 @@ public class TurnManager : MonoBehaviour
         currentTurn++;
 
         //if last players turn return to first player
-        if (currentTurn > Turns.Opponent3)
+        if (currentTurn > Turns.Ai)
         {
             currentTurn = Turns.Player;
         }
@@ -49,20 +47,9 @@ public class TurnManager : MonoBehaviour
             EnablePlayerCards(false);
         }
 
-
-        switch (currentTurn)
+        if(currentTurn == Turns.Ai)
         {
-            case Turns.Opponent1:
-                _enemyDecks[0].UseTurn();
-                break;
-
-            case Turns.Opponent2:
-                _enemyDecks[1].UseTurn();
-                break;
-
-            case Turns.Opponent3:
-                _enemyDecks[2].UseTurn();
-                break;
+            _enemyDeck.UseTurn();
         }
     }
 

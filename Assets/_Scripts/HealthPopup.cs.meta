@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: e870a3042df1ef04cbb343f8fdf5083d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pfDamagePopup: {fileID: 2312406325131345215, guid: ef166332776d3174389d01b2d5ce3104, type: 3}
+  - pfHealPopup: {fileID: 2312406325131345215, guid: 7e475e9f916456c4abc9e99ea1eca585, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

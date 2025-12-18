@@ -29,6 +29,8 @@ public class Health : MonoBehaviour
         }
 
         healthBarImage.fillAmount =(float) _health / _maxHealth;
+
+        _health = Mathf.Clamp(_health, 0, _maxHealth);
     }
 
     public void TakeDamageOrHeal(int amount)
