@@ -9,7 +9,7 @@ public class HealthPopup : MonoBehaviour
     public void Create(Vector3 pos, int amount, bool isDamage)
     {
 
-        GameObject prefab = isDamage ? HealPopup : DamagePopup;
+        GameObject prefab = isDamage ? DamagePopup : HealPopup;
         GameObject popUpGameObject = Instantiate(prefab, pos, Quaternion.identity);
 
         PopUp popUp = popUpGameObject.GetComponent<PopUp>();
