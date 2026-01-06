@@ -29,8 +29,11 @@ public class DeckManager : MonoBehaviour
     public void Attack()
     {
         int amount = Random.Range(10, 20);
+
         Debug.Log(gameObject.name + "is attacking " + amount + "points");
+
         enemyHealth.TakeDamageOrHeal(-amount);
+
         healthPopup = enemyHealth.GetComponent<HealthPopup>();
         healthPopup.Create(healthPopup.transform.position, amount, true);
     }

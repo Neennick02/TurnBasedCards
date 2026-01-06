@@ -20,25 +20,30 @@ public class EnemyDeck : MonoBehaviour
 
     public void UseTurn()
     {
-        StartCoroutine(Wait());
+        StartCoroutine(AiTurn());
+    }
 
-        if (_healthScript.ReturnHealth() < _healthScript.ReturnMaxHealth())
+    private IEnumerator AiTurn()
+    {
+        float waitTime = Random.Range(0.5f, 3f);
+        yield return new WaitForSeconds(waitTime);
+
+        int health = _healthScript._health;
+        int max = _healthScript._maxHealth;
+
+        //check health
+        if (health < max - (health / 3))
         {
-            int healthAmount = Random.Range(10, 20);
-            Heal(healthAmount);
+            int healAmount = Random.Range(10, 20);
+            Heal(healAmount);
         }
+        //if full health
         else
         {
             int damageAmount = Random.Range(10, 20);
             Attack(damageAmount);
         }
         turnManager.ChangeTurn();
-    }
-
-    private IEnumerator Wait()
-    {
-        float waitTime = Random.Range(0.3f, 2f);
-        yield return new WaitForSeconds(waitTime);
     }
 
     private void Attack(int amount)

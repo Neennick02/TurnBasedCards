@@ -4,13 +4,11 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int _maxHealth = 100;
+    [SerializeField] public int _maxHealth { get; private set;} = 100;
+    [SerializeField] public int _health { get; private set; }
+
     [SerializeField] Image healthBarImage;
     [SerializeField] TextMeshProUGUI healthText;
-
-    [SerializeField]private int _health;
-    
-
 
     private void Start()
     {
@@ -36,15 +34,5 @@ public class Health : MonoBehaviour
     public void TakeDamageOrHeal(int amount)
     {
         _health += amount;
-    }
-
-    public int ReturnHealth()
-    {
-        return _health;
-    }
-
-    public int ReturnMaxHealth()
-    {
-        return _maxHealth;
     }
 }

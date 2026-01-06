@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2312406325131345215}
   - component: {fileID: 1056807205957722299}
   m_Layer: 0
-  m_Name: pfHealPopup
+  m_Name: HealPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,56 +7,57 @@ using UnityEngine.UI;
 public class TurnManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _activePlayer;
-    Turns currentTurn;
-    private int _playerAmount;
+    [SerializeField] private ManaManager _manaManager;
+    private ActivePlayer CurrentPlayer;
 
+    enum ActivePlayer
+    {
+        Player,
+        Ai
+    }
 
     [SerializeField] private DeckManager playerDeck;
     [SerializeField] private Button _nextTurnButton;
 
 
     [SerializeField] private EnemyDeck _enemyDeck;
-    enum Turns
-    {
-        Player,
-        Ai
-    }
+
+    public int roundCounter { get; private set; }
+
     private void Start()
     {
-        currentTurn = Turns.Player;
-        _playerAmount = System.Enum.GetValues(typeof(Turns)).Length;
+        //players turn starts
+        CurrentPlayer = ActivePlayer.Player;
+        roundCounter = 0;
     }
     public void ChangeTurn()
     {
         //change turn
-        currentTurn++;
+        if (CurrentPlayer == ActivePlayer.Player) CurrentPlayer = ActivePlayer.Ai;
+        else CurrentPlayer = ActivePlayer.Player;
 
-        //if last players turn return to first player
-        if (currentTurn > Turns.Ai)
-        {
-            currentTurn = Turns.Player;
-        }
 
         //if players turn enable deck
-        if(currentTurn == Turns.Player)
+        if (CurrentPlayer == ActivePlayer.Player)
         {
             EnablePlayerCards(true);
+            roundCounter++;
+            _manaManager.SetManaAmount(roundCounter);
         }
         else
         {
             EnablePlayerCards(false);
         }
 
-        if(currentTurn == Turns.Ai)
+        if(CurrentPlayer == ActivePlayer.Ai)
         {
             _enemyDeck.UseTurn();
         }
     }
 
     private void Update()
-    {
-        _activePlayer.text = "Current player : " +currentTurn.ToString();
-
+    {        
+        _activePlayer.text = "Current player : " + CurrentPlayer.ToString();
     }
     
 

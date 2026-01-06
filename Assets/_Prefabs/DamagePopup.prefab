@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2148992604277843101}
   - component: {fileID: 2312406325131345215}
   m_Layer: 0
-  m_Name: pfDamagePopup
+  m_Name: DamagePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
