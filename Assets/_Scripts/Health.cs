@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] public int _maxHealth { get; private set;} = 100;
+    public int _maxHealth { get; private set;} = 30;
     [SerializeField] public int _health { get; private set; }
 
     [SerializeField] Image healthBarImage;
