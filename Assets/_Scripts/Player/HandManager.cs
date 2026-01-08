@@ -11,6 +11,7 @@ public class HandManager : MonoBehaviour
 
     [SerializeField] private SplineContainer splineContainer;
 
+
     [SerializeField] private Transform spawnPoint;
 
     [SerializeField] private List<GameObject> handCards = new();
