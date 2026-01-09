@@ -16,7 +16,7 @@ public class TurnManager : MonoBehaviour
         Ai
     }
 
-    [SerializeField] private DeckManager playerDeck;
+    [SerializeField] private PlayerDeckManager playerDeck;
     [SerializeField] private Button _nextTurnButton;
 
 
@@ -40,14 +40,10 @@ public class TurnManager : MonoBehaviour
         //if players turn enable deck
         if (CurrentPlayer == ActivePlayer.Player)
         {
-            EnablePlayerCards(true);
             roundCounter++;
             _manaManager.SetManaAmount(roundCounter);
         }
-        else
-        {
-            EnablePlayerCards(false);
-        }
+
 
         if(CurrentPlayer == ActivePlayer.Ai)
         {
@@ -58,12 +54,5 @@ public class TurnManager : MonoBehaviour
     private void Update()
     {        
         _activePlayer.text = "Current player : " + CurrentPlayer.ToString();
-    }
-    
-
-    private void EnablePlayerCards(bool active)
-    {
-        playerDeck.EnableCards(active);
-        _nextTurnButton.enabled = active;
     }
 }

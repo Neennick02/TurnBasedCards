@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     public int _maxHealth { get; private set;} = 30;
     [SerializeField] public int _health { get; private set; }
+    public int shieldAmount = 0;
 
     [SerializeField] Image healthBarImage;
     [SerializeField] TextMeshProUGUI healthText;
@@ -34,5 +35,10 @@ public class Health : MonoBehaviour
     public void TakeDamageOrHeal(int amount)
     {
         _health += amount;
+    }
+
+    public void AddShield(int amount)
+    {
+        shieldAmount += amount;
     }
 }

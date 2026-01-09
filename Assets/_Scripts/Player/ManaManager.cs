@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ManaManager : MonoBehaviour
 {
-    public int CurrentMana { get; private set; }
+    public int CurrentMana;
     private int maxMana;
     private int baseManaAmount = 3;
     [SerializeField] private Image _manaBar;
@@ -28,13 +28,7 @@ public class ManaManager : MonoBehaviour
     {
          CurrentMana -= amount;
         _manaCounter.text = CurrentMana.ToString();
-
-        /*float target = CurrentMana - amount;
-        float drainSpeed = 0.5f;
-        Mathf.Lerp(CurrentMana, target, drainSpeed * Time.deltaTime);*/
-
-
-        StartCoroutine(DrainBar(CurrentMana - amount));
+        UpdateManaBar();
     }
 
     private void UpdateManaBar()
@@ -44,13 +38,6 @@ public class ManaManager : MonoBehaviour
 
     IEnumerator DrainBar(int target)
     {
-        float elapsedTime = 0f;
-        float waitTime = 1f;
-        while (elapsedTime < waitTime)
-        {
-            _manaBar.fillAmount = Mathf.Lerp(CurrentMana, target, (elapsedTime/ waitTime));
-            elapsedTime += Time.deltaTime;
-        }
-        return null;
+        yield return null;
     }
 }

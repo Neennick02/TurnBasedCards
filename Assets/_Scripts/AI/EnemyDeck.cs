@@ -34,13 +34,27 @@ public class EnemyDeck : MonoBehaviour
         //check health
         if (health < max - (health / 3))
         {
-            int healAmount = Random.Range(10, 20);
-            Heal(healAmount);
+            int healAmount = Random.Range(1, 10);
+
+            int randomInt = Random.Range(0, 2);
+
+            if(randomInt == 0)
+            {
+                Heal(healAmount);
+            }
+            else if(randomInt == 1)
+            {
+                AddShield(healAmount);
+            }
+            else
+            {
+                Attack(healAmount);
+            }
         }
         //if full health
         else
         {
-            int damageAmount = Random.Range(10, 20);
+            int damageAmount = Random.Range(1, 10);
             Attack(damageAmount);
         }
         turnManager.ChangeTurn();
@@ -49,6 +63,11 @@ public class EnemyDeck : MonoBehaviour
     private void Attack(int amount)
     {
         Debug.Log(gameObject.name + "is attacking " + amount + "points");
+
+        if(_playerHealth.shieldAmount > 0)
+        {
+            amount -= _playerHealth.shieldAmount;
+        }
 
         _playerHealth.TakeDamageOrHeal(-amount);
 
@@ -63,5 +82,10 @@ public class EnemyDeck : MonoBehaviour
         _healthScript.TakeDamageOrHeal(amount);
 
         healthPopup.Create(transform.position, amount, false);
+    }
+
+    private void AddShield(int amount)
+    {
+        _healthScript.shieldAmount += amount;
     }
 }
