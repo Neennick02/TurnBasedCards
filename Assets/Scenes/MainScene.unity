@@ -937,7 +937,7 @@ MonoBehaviour:
   - {fileID: 1200084433}
   enemyHealth: {fileID: 1419358614}
   turnManager: {fileID: 249618638}
-  handManager: {fileID: 0}
+  handManager: {fileID: 249618640}
 --- !u!114 &233386567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,6 +963,7 @@ GameObject:
   - component: {fileID: 249618637}
   - component: {fileID: 249618638}
   - component: {fileID: 249618639}
+  - component: {fileID: 249618640}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1025,6 +1026,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: dcf1355a2866da448861fe03103fd5d5, type: 3}
   - {fileID: 21300000, guid: 6f330aa82bfde1a47bfe77e6ef902ad9, type: 3}
   - {fileID: 21300000, guid: 2761b2064f8f6854e93b403b4e751843, type: 3}
+--- !u!114 &249618640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249618636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a319946235230f448ddd144744dc1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHandSize: 5
+  cardPrefab: {fileID: 6845994330997332483, guid: ff1a37e1ed3bbef49acdb5d3a6fd1ecb, type: 3}
+  splineContainer: {fileID: 851724990}
+  spawnPoint: {fileID: 2020513638}
+  handCards: []
+  zoomScale: {x: 1.5, y: 1.5, z: 1.5}
+  cardTargetZoomPos: {x: 0, y: 35, z: -10}
 --- !u!1 &256809089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,57 +2394,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941080432}
   m_CullTransparentMesh: 1
---- !u!1 &970545910
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 970545912}
-  - component: {fileID: 970545911}
-  m_Layer: 0
-  m_Name: HandManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &970545911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970545910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a319946235230f448ddd144744dc1d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHandSize: 5
-  cardPrefab: {fileID: 6845994330997332483, guid: ff1a37e1ed3bbef49acdb5d3a6fd1ecb, type: 3}
-  splineContainer: {fileID: 851724990}
-  spawnPoint: {fileID: 2020513638}
-  handCards: []
-  zoomScale: {x: 1.5, y: 1.5, z: 1.5}
-  cardTargetZoomPos: {x: 0, y: 35, z: -10}
---- !u!4 &970545912
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 970545910}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1039.8055, y: 126.952194, z: -204.81133}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1200084431
 GameObject:
   m_ObjectHideFlags: 0
@@ -4609,6 +4578,5 @@ SceneRoots:
   - {fileID: 233386565}
   - {fileID: 742025907}
   - {fileID: 2020513638}
-  - {fileID: 970545912}
   - {fileID: 851724991}
   - {fileID: 4895880391077820046}

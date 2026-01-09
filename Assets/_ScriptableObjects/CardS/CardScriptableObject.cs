@@ -3,20 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CardScriptableObject", menuName = "Scriptable Objects/CardScriptableObject")]
 public class CardScriptableObject : ScriptableObject
 {
-    public enum type
+    public enum Type
     {
         Damage,
         Heal,
         Defend,
+        None
     }
 
-    public enum secondType
-    {
-        None,
-        Damage,
-        Heal,
-        Defend,
-    }
 
     public new string cardName;
     public string description;
@@ -28,4 +22,6 @@ public class CardScriptableObject : ScriptableObject
     public int heal;
     public int defend;
     public int turns = 1;
+    public Type type1;
+    public Type type2;
 }

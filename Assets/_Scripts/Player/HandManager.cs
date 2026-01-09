@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,7 +16,7 @@ public class HandManager : MonoBehaviour
 
     [SerializeField] private Transform spawnPoint;
 
-    [SerializeField] private List<GameObject> handCards = new();
+    [SerializeField] public List<GameObject> handCards = new();
 
     [SerializeField] Vector3 zoomScale;
 
@@ -109,15 +110,22 @@ public class HandManager : MonoBehaviour
     {
         if (handCards.Count >= maxHandSize) return;
 
+        StartCoroutine(DrawCardsRoutine());
+    }
+
+    private IEnumerator DrawCardsRoutine()
+    {
         while (handCards.Count < maxHandSize)
         {
             GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
             g.transform.SetParent(splineContainer.transform);
             handCards.Add(g);
             UpdateCardPositions();
+            yield return new WaitForSeconds(0.2f);
         }
     }
-    private void UpdateCardPositions()
+
+    public void UpdateCardPositions()
     {
         //check if player has cards
         if (handCards.Count == 0) return;
