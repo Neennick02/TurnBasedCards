@@ -8,9 +8,9 @@ public class TurnManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _activePlayer;
     [SerializeField] private ManaManager _manaManager;
-    private ActivePlayer CurrentPlayer;
+    public ActivePlayer CurrentPlayer { get; private set; }
 
-    enum ActivePlayer
+    public enum ActivePlayer
     {
         Player,
         Ai

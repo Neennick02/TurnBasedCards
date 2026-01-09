@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class CardDisplay : MonoBehaviour
 {
     public List<CardScriptableObject> cards;
-    private CardScriptableObject card;
+    public CardScriptableObject card { get; private set;}
+
 
     [SerializeField] private TextMeshPro name;
     [SerializeField] private TextMeshPro description;
@@ -14,7 +15,7 @@ public class CardDisplay : MonoBehaviour
     [SerializeField] private SpriteRenderer artwork;
 
 
-    private void Start()
+    private void Awake()
     {
         card = cards[Random.Range(0, cards.Count)];
 

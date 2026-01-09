@@ -936,6 +936,8 @@ MonoBehaviour:
   - {fileID: 923957949}
   - {fileID: 1200084433}
   enemyHealth: {fileID: 1419358614}
+  turnManager: {fileID: 249618638}
+  handManager: {fileID: 0}
 --- !u!114 &233386567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2407,6 +2409,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2020513638}
   handCards: []
   zoomScale: {x: 1.5, y: 1.5, z: 1.5}
+  cardTargetZoomPos: {x: 0, y: 35, z: -10}
 --- !u!4 &970545912
 Transform:
   m_ObjectHideFlags: 0

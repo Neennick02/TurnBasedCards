@@ -23,12 +23,14 @@ public class HandManager : MonoBehaviour
     Transform hoveredCard = null;
     private Dictionary<Transform, Tween> cardTweens = new();
     Transform previousCard = null;
+    private Dictionary<Transform, int> originalSortOrders = new Dictionary<Transform, int>();
+
+    [SerializeField] private Vector3 cardTargetZoomPos;
+
+    private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DrawCards();
-        }
 
         // Handle hover raycast
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -41,13 +43,29 @@ public class HandManager : MonoBehaviour
             newHoveredCard = hit.transform;
         }
 
+        if (hoveredCard != newHoveredCard)
+        {
+            hoveredCard = newHoveredCard;
+
+            if (hoveredCard != null && !originalPositions.ContainsKey(hoveredCard))
+            {
+                originalPositions[hoveredCard] = hoveredCard.position;
+            }
+        }
+
         // If hovered card changed
         if (hoveredCard != newHoveredCard)
         {
             // Shrink previous hovered card
             if (hoveredCard != null)
             {
-                StartCardTween(hoveredCard, Vector3.one);
+                 StartCardTween(hoveredCard, Vector3.one);
+
+                 if (originalSortOrders.ContainsKey(hoveredCard))
+                 {
+                     hoveredCard.GetComponent<SortingGroup>().sortingOrder = originalSortOrders[hoveredCard];
+                 }
+                hoveredCard.transform.position = Vector3.Lerp(hoveredCard.transform.position, cardTargetZoomPos, Time.deltaTime / duration);
             }
 
             hoveredCard = newHoveredCard;
@@ -55,34 +73,49 @@ public class HandManager : MonoBehaviour
             // Zoom new hovered card
             if (hoveredCard != null)
             {
+                SortingGroup sort = hoveredCard.GetComponent<SortingGroup>();
+
+                if (!originalSortOrders.ContainsKey(hoveredCard))
+                {
+                    originalSortOrders[hoveredCard] = sort.sortingOrder;
+                }
+
                 StartCardTween(hoveredCard, zoomScale);
+
+                sort.sortingOrder = sort.sortingOrder + 100;
             }
         }
     }
-    private void StartCardTween(Transform card, Vector3 targetScale)
-    {
-        // Kill any previous tween on this card
-        if (cardTweens.ContainsKey(card))
+
+       private void StartCardTween(Transform card, Vector3 targetScale)
         {
-            cardTweens[card].Kill();
-            cardTweens.Remove(card);
+            // Kill any previous tween on this card
+            if (cardTweens.ContainsKey(card))
+            {
+                cardTweens[card].Kill();
+                cardTweens.Remove(card);
+            }
+
+            // Start new tween
+            Tween t = card.DOScale(targetScale, duration).SetEase(Ease.OutQuad);
+            cardTweens[card] = t;
+
+
+            // Remove tween from dictionary once complete
+            t.OnComplete(() => cardTweens.Remove(card));
         }
-
-        // Start new tween
-        Tween t = card.DOScale(targetScale, duration).SetEase(Ease.OutQuad);
-        cardTweens[card] = t;
-
-        // Remove tween from dictionary once complete
-        t.OnComplete(() => cardTweens.Remove(card));
-    }
-
-    private void DrawCards()
+    
+    public void DrawCards()
     {
         if (handCards.Count >= maxHandSize) return;
-        GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
-        g.transform.SetParent(splineContainer.transform);
-        handCards.Add(g);
-        UpdateCardPositions();
+
+        while (handCards.Count < maxHandSize)
+        {
+            GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
+            g.transform.SetParent(splineContainer.transform);
+            handCards.Add(g);
+            UpdateCardPositions();
+        }
     }
     private void UpdateCardPositions()
     {
