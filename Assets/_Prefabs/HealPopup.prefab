@@ -130,14 +130,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6805e47e4132fa444b217aafe60f37dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomOffset: {x: 0.5, y: 0.3, z: 0}
+  randomOffset: {x: 0.1, y: 0.2, z: 0}
   lifeTime: 2
-  moveSpeed: 20
+  moveSpeed: 2
   fadeSpeed: 4
