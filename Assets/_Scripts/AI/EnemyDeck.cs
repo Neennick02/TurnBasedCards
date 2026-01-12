@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyDeck : MonoBehaviour
 {
     [SerializeField] private TurnManager turnManager;
+    [SerializeField] private CharacterAnimator characterAnimator;
 
     private Health _healthScript;
     private HealthPopup healthPopup;
@@ -45,6 +46,7 @@ public class EnemyDeck : MonoBehaviour
             }
             else if(randomInt == 1)
             {
+                characterAnimator.SpellAnimation();
                 _healthScript.AddShield(healAmount);
             }
             else
@@ -65,6 +67,8 @@ public class EnemyDeck : MonoBehaviour
 
     private void Attack(int remainingDamage)
     {
+        characterAnimator.AttackAnimation();
+
         if (_playerHealth.shieldAmount > remainingDamage)
         {
             remainingDamage -= _playerHealth.shieldAmount;
@@ -87,6 +91,7 @@ public class EnemyDeck : MonoBehaviour
 
     private void Heal(int amount)
     {
+        characterAnimator.HealAnimation();
         _healthScript.TakeDamageOrHeal(amount);
 
         healthPopup.Create(transform.position, amount, false);

@@ -18,6 +18,7 @@ public class PlayerDeckManager : MonoBehaviour
     [SerializeField] private HandManager handManager;
     [SerializeField] private ManaManager manaManager;
     [SerializeField] private GameObject dotPrefab;
+    [SerializeField] private CharacterAnimator animator;
 
     private bool cardsDrawn;
     private void Start()
@@ -196,6 +197,7 @@ public class PlayerDeckManager : MonoBehaviour
     }
     public void Attack(int remainingDamage)
     {
+        animator.AttackAnimation();
         //check player defense stats
         if(enemyHealth.shieldAmount > remainingDamage)
         {
@@ -225,6 +227,7 @@ public class PlayerDeckManager : MonoBehaviour
 
     public void Heal(int healAmount)
     {
+        animator.HealAnimation();
         playerHealth.TakeDamageOrHeal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
         healthPopup.Create(transform.position, healAmount, false);
@@ -232,6 +235,7 @@ public class PlayerDeckManager : MonoBehaviour
 
     public void Defend(int amount)
     {
+        animator.SpellAnimation();
         playerHealth.shieldAmount += amount;
         playerHealth.UpdateShield(playerHealth.shieldAmount);
     }

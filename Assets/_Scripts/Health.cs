@@ -15,17 +15,21 @@ public class Health : MonoBehaviour
     [SerializeField] private TextMeshProUGUI shieldCounter;
 
     public List<GameObject> activeDotEffects = new List<GameObject>();
+
+    [SerializeField] CharacterAnimator characterAnimator;
     private void Start()
     {
         _health = _maxHealth;
+        characterAnimator = GetComponentInChildren<CharacterAnimator>();
         UpdateShield(0);
     }
 
     private void Update()
     {
-        if(_health < 0)
+        if(_health <= 0)
         {
-            //Debug.Log("Player " + gameObject.name + "died");
+            Debug.Log("Player " + gameObject.name + "died");
+            characterAnimator.DeathAnimation();
         }
         if(healthText != null)
         {
