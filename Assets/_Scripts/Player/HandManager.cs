@@ -90,7 +90,7 @@ public class HandManager : MonoBehaviour
 
        private void StartCardTween(Transform card, Vector3 targetScale)
         {
-            // Kill any previous tween on this card
+            /*// Kill any previous tween on this card
             if (cardTweens.ContainsKey(card))
             {
                 cardTweens[card].Kill();
@@ -103,7 +103,7 @@ public class HandManager : MonoBehaviour
 
 
             // Remove tween from dictionary once complete
-            t.OnComplete(() => cardTweens.Remove(card));
+            t.OnComplete(() => cardTweens.Remove(card));*/
         }
     
     public void DrawCards()
@@ -119,8 +119,14 @@ public class HandManager : MonoBehaviour
         {
             GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
             g.transform.SetParent(splineContainer.transform);
+
+            //add to hand list
             handCards.Add(g);
+
+            //update spacing
             UpdateCardPositions();
+
+            //wait before grabbing new card
             yield return new WaitForSeconds(0.2f);
         }
     }
@@ -130,6 +136,7 @@ public class HandManager : MonoBehaviour
         //check if player has cards
         if (handCards.Count == 0) return;
 
+        //calculate spacing
         float cardSpacing = 1f / maxHandSize;
         float firstCardPosition = 0.5f - (handCards.Count - 1) * cardSpacing / 2;
         Spline spline = splineContainer.Spline;
@@ -139,13 +146,17 @@ public class HandManager : MonoBehaviour
             float p = firstCardPosition + i * cardSpacing;
 
             Vector3 splinePosition = spline.EvaluatePosition(p);
+            splinePosition += Camera.main.transform.forward * (i * 0.01f);
+
             Vector3 forward = spline.EvaluateTangent(p);
             Vector3 up = spline.EvaluateUpVector(p);
 
-              Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized);
+            Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized);
+
             handCards[i].transform.DOMove(splinePosition, 0.25f);
             handCards[i].transform.DOLocalRotateQuaternion(rotation, 0.25f);
 
+            //update sorting group on the parent of the cards
             var sortingGroup = handCards[i].GetComponent<SortingGroup>();
             if (sortingGroup != null)
             {
