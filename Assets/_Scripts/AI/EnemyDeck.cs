@@ -26,7 +26,7 @@ public class EnemyDeck : MonoBehaviour
 
     private IEnumerator AiTurn()
     {
-        float waitTime = Random.Range(0.5f, 3f);
+        float waitTime = Random.Range(0.2f, 1f);
         yield return new WaitForSeconds(waitTime);
 
         int health = _healthScript._health;
@@ -58,13 +58,13 @@ public class EnemyDeck : MonoBehaviour
             int damageAmount = Random.Range(1, 10);
             Attack(damageAmount);
         }
+        yield return new WaitForSeconds(waitTime);
+
         turnManager.ChangeTurn();
     }
 
     private void Attack(int remainingDamage)
     {
-        Debug.Log(gameObject.name + "is attacking " + remainingDamage + "points");
-
         if (_playerHealth.shieldAmount > remainingDamage)
         {
             remainingDamage -= _playerHealth.shieldAmount;
@@ -87,8 +87,6 @@ public class EnemyDeck : MonoBehaviour
 
     private void Heal(int amount)
     {
-        Debug.Log(gameObject.name + "is healing " + amount + "points");
-
         _healthScript.TakeDamageOrHeal(amount);
 
         healthPopup.Create(transform.position, amount, false);

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +17,9 @@ public class PlayerDeckManager : MonoBehaviour
     [SerializeField] private TurnManager turnManager;
     [SerializeField] private HandManager handManager;
     [SerializeField] private ManaManager manaManager;
+    [SerializeField] private GameObject dotPrefab;
 
     private bool cardsDrawn;
-
     private void Start()
     {
         playerHealth = GetComponent<Health>();
@@ -31,11 +32,14 @@ public class PlayerDeckManager : MonoBehaviour
         if (turnManager.CurrentPlayer == TurnManager.ActivePlayer.Ai) cardsDrawn = false;
         else
         {
-            //draw cards
             if (!cardsDrawn)
             {
+                //draw cards
                 handManager.DrawCards();
                 cardsDrawn = true;
+
+                //use waitList
+                ProcessEffectOverTime();
             }
 
             //check mouse hover 
@@ -68,18 +72,25 @@ public class PlayerDeckManager : MonoBehaviour
 
         manaManager.DrainMana(card.manaCost);
 
-        //first card effect
+        int effectAmount = 0; //amount used if card is active for > 1 round
 
+
+        //first card effect
         switch (card.type1) 
         {
             case CardScriptableObject.Type.Damage:
                 Attack(card.attack);
+                effectAmount = card.attack;
+
                 break;
             case CardScriptableObject.Type.Heal:
                 Heal(card.heal);
+                effectAmount = card.heal;
                 break;
+
             case CardScriptableObject.Type.Defend:
                 Defend(card.defend);
+                effectAmount = card.defend;
                 break;
         }
 
@@ -90,6 +101,7 @@ public class PlayerDeckManager : MonoBehaviour
                 break;
             case CardScriptableObject.Type.Damage:
                 Attack(card.attack);
+
                 break;
             case CardScriptableObject.Type.Heal:
                 Heal(card.heal);
@@ -99,8 +111,78 @@ public class PlayerDeckManager : MonoBehaviour
                 break;
         }
 
-        //remove card from hand
+        //check if card is used in more than 1 round
+        if(card.turns > 1)
+        {
+            AddDamageOverTime(effectAmount , card.turns - 1, card.type1);
+        }
+
+        //removes card from hand
         RemoveCard(hit);
+    }
+
+    public void ProcessEffectOverTime()
+    {
+        //loop over wait list
+        for (int i = enemyHealth.activeDotEffects.Count - 1; i >= 0; i--)
+        {
+            OverTimeEffect dot = enemyHealth.activeDotEffects[i].GetComponent<OverTimeEffect>();
+            GameObject instance = enemyHealth.activeDotEffects[i];
+            Debug.Log("used");
+            //apply damage
+            switch (dot.Type) 
+            {
+                case OverTimeEffect.EffectType.Attack: 
+                    Attack(dot.EffectAmountPerTurn);
+                    break;
+
+                case OverTimeEffect.EffectType.Heal: 
+                    Heal(dot.EffectAmountPerTurn);
+                    break;
+
+                case OverTimeEffect.EffectType.Defend: 
+                    playerHealth.AddShield(dot.EffectAmountPerTurn); 
+                    break;
+            }
+            //use turn
+            dot.remainingTurns--;
+
+            //remove from list
+            if (dot.remainingTurns <= 0)
+            {
+                enemyHealth.activeDotEffects.RemoveAt(i);
+                Destroy(instance);
+            }
+        }
+    }
+
+    private void AddDamageOverTime(int amount, int turns, CardScriptableObject.Type type)
+    {
+        GameObject dotInstance = Instantiate(dotPrefab, transform.position, transform.rotation);
+        OverTimeEffect dot = dotInstance.GetComponent<OverTimeEffect>();
+        dot.EffectAmountPerTurn = amount;
+        dot.remainingTurns = turns;
+
+        switch(type) //check the effect type
+        {
+            case CardScriptableObject.Type.Damage:
+                dot.Type = OverTimeEffect.EffectType.Attack;
+                //add to enemy list
+                enemyHealth.activeDotEffects.Add(dotInstance);
+                break;
+
+                case CardScriptableObject.Type.Defend:
+                dot.Type = OverTimeEffect.EffectType.Defend;
+                //add to player list
+                enemyHealth.activeDotEffects.Add(dotInstance);
+                break;
+
+                case CardScriptableObject.Type.Heal:
+                dot.Type = OverTimeEffect.EffectType.Heal;
+                //add to player list
+                enemyHealth.activeDotEffects.Add(dotInstance);
+                break;
+        }
     }
 
     private void RemoveCard(RaycastHit hit)
@@ -114,16 +196,16 @@ public class PlayerDeckManager : MonoBehaviour
     }
     public void Attack(int remainingDamage)
     {
-        Debug.Log(gameObject.name + " is attacking " + remainingDamage + " points");
-
         //check player defense stats
         if(enemyHealth.shieldAmount > remainingDamage)
         {
+            //when shield is greater than damage
             enemyHealth.shieldAmount -= remainingDamage;
             remainingDamage = 0;
         }
         else
         {
+            //when damage is greater than shield
             remainingDamage -= enemyHealth.shieldAmount;
             enemyHealth.shieldAmount = 0;
         }
@@ -139,10 +221,10 @@ public class PlayerDeckManager : MonoBehaviour
         healthPopup.Create(enemyHealth.transform.position, remainingDamage, true);
     }
 
+    
+
     public void Heal(int healAmount)
     {
-        Debug.Log(gameObject.name + " is healing " + healAmount + " points");
-
         playerHealth.TakeDamageOrHeal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
         healthPopup.Create(transform.position, healAmount, false);
@@ -150,7 +232,6 @@ public class PlayerDeckManager : MonoBehaviour
 
     public void Defend(int amount)
     {
-        Debug.Log(gameObject.name + "is defending " + amount + " points");
         playerHealth.shieldAmount += amount;
         playerHealth.UpdateShield(playerHealth.shieldAmount);
     }

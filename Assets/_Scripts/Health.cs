@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +13,8 @@ public class Health : MonoBehaviour
     [SerializeField] private Image healthBarImage;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI shieldCounter;
+
+    public List<GameObject> activeDotEffects = new List<GameObject>();
     private void Start()
     {
         _health = _maxHealth;
@@ -21,7 +25,7 @@ public class Health : MonoBehaviour
     {
         if(_health < 0)
         {
-            Debug.Log("Player " + gameObject.name + "died");
+            //Debug.Log("Player " + gameObject.name + "died");
         }
         if(healthText != null)
         {
