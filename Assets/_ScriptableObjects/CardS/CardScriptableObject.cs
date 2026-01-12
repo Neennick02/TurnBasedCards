@@ -16,6 +16,7 @@ public class CardScriptableObject : ScriptableObject
     public string description;
 
     public Sprite artwork;
+    public Sprite cardAppearance;
 
     public int manaCost;
     public int attack;

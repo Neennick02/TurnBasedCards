@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Splines;
+using UnityEngine.EventSystems;
 
 public class HandManager : MonoBehaviour
 {
-    [SerializeField] private int maxHandSize = 5;
-
+    private int maxHandSize = 5;
     [SerializeField] private GameObject cardPrefab;
 
-    [SerializeField] private SplineContainer splineContainer;
+    private SplineContainer splineContainer;
 
 
     [SerializeField] private Transform spawnPoint;
@@ -20,9 +20,11 @@ public class HandManager : MonoBehaviour
 
     [SerializeField] Vector3 zoomScale;
 
-    float duration = .5f;
+    //card zoom variables
+    float zoomDuration = .5f;
     Transform hoveredCard = null;
-    private Dictionary<Transform, Tween> cardTweens = new();
+
+    //private Dictionary<Transform, Tween> cardTweens = new();
     Transform previousCard = null;
     private Dictionary<Transform, int> originalSortOrders = new Dictionary<Transform, int>();
 
@@ -30,6 +32,10 @@ public class HandManager : MonoBehaviour
 
     private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
 
+    private void Start()
+    {
+        splineContainer = GetComponentInChildren<SplineContainer>();
+    }
     private void Update()
     {
 
@@ -39,75 +45,16 @@ public class HandManager : MonoBehaviour
 
         Transform newHoveredCard = null;
 
+        //check for card
         if (Physics.Raycast(ray, out hit, 100f) && hit.transform.CompareTag("Card"))
         {
             newHoveredCard = hit.transform;
         }
 
-        if (hoveredCard != newHoveredCard)
-        {
-            hoveredCard = newHoveredCard;
-
-            if (hoveredCard != null && !originalPositions.ContainsKey(hoveredCard))
-            {
-                originalPositions[hoveredCard] = hoveredCard.position;
-            }
-        }
-
-        // If hovered card changed
-        if (hoveredCard != newHoveredCard)
-        {
-            // Shrink previous hovered card
-            if (hoveredCard != null)
-            {
-                 StartCardTween(hoveredCard, Vector3.one);
-
-                 if (originalSortOrders.ContainsKey(hoveredCard))
-                 {
-                     hoveredCard.GetComponent<SortingGroup>().sortingOrder = originalSortOrders[hoveredCard];
-                 }
-                hoveredCard.transform.position = Vector3.Lerp(hoveredCard.transform.position, cardTargetZoomPos, Time.deltaTime / duration);
-            }
-
-            hoveredCard = newHoveredCard;
-
-            // Zoom new hovered card
-            if (hoveredCard != null)
-            {
-                SortingGroup sort = hoveredCard.GetComponent<SortingGroup>();
-
-                if (!originalSortOrders.ContainsKey(hoveredCard))
-                {
-                    originalSortOrders[hoveredCard] = sort.sortingOrder;
-                }
-
-                StartCardTween(hoveredCard, zoomScale);
-
-                sort.sortingOrder = sort.sortingOrder + 100;
-            }
-        }
     }
-
-       private void StartCardTween(Transform card, Vector3 targetScale)
-        {
-            /*// Kill any previous tween on this card
-            if (cardTweens.ContainsKey(card))
-            {
-                cardTweens[card].Kill();
-                cardTweens.Remove(card);
-            }
-
-            // Start new tween
-            Tween t = card.DOScale(targetScale, duration).SetEase(Ease.OutQuad);
-            cardTweens[card] = t;
-
-
-            // Remove tween from dictionary once complete
-            t.OnComplete(() => cardTweens.Remove(card));*/
-        }
-    
     public void DrawCards()
     {
+        //picks up cards
         if (handCards.Count >= maxHandSize) return;
 
         StartCoroutine(DrawCardsRoutine());
@@ -139,27 +86,35 @@ public class HandManager : MonoBehaviour
         //calculate spacing
         float cardSpacing = 1f / maxHandSize;
         float firstCardPosition = 0.5f - (handCards.Count - 1) * cardSpacing / 2;
+
         Spline spline = splineContainer.Spline;
 
         for (int i = 0; i < handCards.Count; i++)
         {
-            float p = firstCardPosition + i * cardSpacing;
+            float position = firstCardPosition + i * cardSpacing;
 
-            Vector3 splinePosition = spline.EvaluatePosition(p);
-            splinePosition += Camera.main.transform.forward * (i * 0.01f);
+            //converts to world position
+            Vector3 splineLocalPos = spline.EvaluatePosition(position);
+            Vector3 splinePosition= splineContainer.transform.TransformPoint(splineLocalPos);
+            
+            // Z offset
+             splinePosition += Camera.main.transform.forward * (i * -0.01f);
 
-            Vector3 forward = spline.EvaluateTangent(p);
-            Vector3 up = spline.EvaluateUpVector(p);
+            Vector3 forward = spline.EvaluateTangent(position);
+            Vector3 up = spline.EvaluateUpVector(position);
 
             Quaternion rotation = Quaternion.LookRotation(up, Vector3.Cross(up, forward).normalized);
 
-            handCards[i].transform.DOMove(splinePosition, 0.25f);
-            handCards[i].transform.DOLocalRotateQuaternion(rotation, 0.25f);
+            //set card position
+            handCards[i].transform.DOMove(splinePosition, .3f);
+            handCards[i].transform.DOLocalRotateQuaternion(rotation, .3f);
 
             //update sorting group on the parent of the cards
             var sortingGroup = handCards[i].GetComponent<SortingGroup>();
+
             if (sortingGroup != null)
             {
+                //the latest card lays on top 
                 sortingGroup.sortingLayerName = "Cards";
                 sortingGroup.sortingOrder = i;
             }

@@ -16,6 +16,7 @@ MonoBehaviour:
   description: A low-cost energy shield with suprising strength that absorbs 4 damage
     points.
   artwork: {fileID: 21300000, guid: 0f86308779bdfe14cb989197303e3165, type: 3}
+  cardAppearance: {fileID: 21300000, guid: 43815734c9db6c341990e1d74135a5b3, type: 3}
   manaCost: 1
   attack: 0
   heal: 0

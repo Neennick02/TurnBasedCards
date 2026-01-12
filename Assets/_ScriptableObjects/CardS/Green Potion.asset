@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Green Potion
   description: Heals 3 health points over 3 turns.
   artwork: {fileID: 21300000, guid: cf47a083edf89dc4d8c366b43feb7e4e, type: 3}
+  cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 3
   attack: 0
   heal: 3

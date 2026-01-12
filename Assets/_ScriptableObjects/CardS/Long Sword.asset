@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: LongSword
   description: A long sword (duh)
   artwork: {fileID: 21300000, guid: ca085cb62c8cf6f458e46090e8dba817, type: 3}
+  cardAppearance: {fileID: 21300000, guid: 33f3aa84b4fc8c04cba1827a15485b1e, type: 3}
   manaCost: 2
   attack: 5
   heal: 0
