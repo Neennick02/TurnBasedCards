@@ -22,6 +22,7 @@ public class PlayerDeckManager : MonoBehaviour
     private void Start()
     {
         playerHealth = GetComponent<Health>();
+        healthPopup = enemyHealth.GetComponent<HealthPopup>();
     }
 
     private void Update()
@@ -83,7 +84,7 @@ public class PlayerDeckManager : MonoBehaviour
         }
 
         //second effect
-        switch (card.type1)
+        switch (card.type2)
         {
             case CardScriptableObject.Type.None:
                 break;
@@ -111,34 +112,46 @@ public class PlayerDeckManager : MonoBehaviour
         //update hand
         handManager.UpdateCardPositions();
     }
-    public void Attack(int amount)
+    public void Attack(int remainingDamage)
     {
+        Debug.Log(gameObject.name + " is attacking " + remainingDamage + " points");
 
-        Debug.Log(gameObject.name + " is attacking " + amount + " points");
-        Debug.Log(playerHealth.shieldAmount);
-        if(enemyHealth.shieldAmount > 0)
+        //check player defense stats
+        if(enemyHealth.shieldAmount > remainingDamage)
         {
-            amount -= enemyHealth.shieldAmount;
+            enemyHealth.shieldAmount -= remainingDamage;
+            remainingDamage = 0;
+        }
+        else
+        {
+            remainingDamage -= enemyHealth.shieldAmount;
+            enemyHealth.shieldAmount = 0;
         }
 
-        enemyHealth.TakeDamageOrHeal(-amount);
+        //update shield amount
+        enemyHealth.UpdateShield(playerHealth.shieldAmount);
 
-        healthPopup = enemyHealth.GetComponent<HealthPopup>();
-        healthPopup.Create(healthPopup.transform.position, amount, true);
+        //deal final damage amount
+        if(remainingDamage > 0)
+        enemyHealth.TakeDamageOrHeal(-remainingDamage);
+
+        //spawn damage popup on enemy
+        healthPopup.Create(enemyHealth.transform.position, remainingDamage, true);
     }
 
-    public void Heal(int amount)
+    public void Heal(int healAmount)
     {
-        Debug.Log(gameObject.name + " is healing " + amount + " points");
+        Debug.Log(gameObject.name + " is healing " + healAmount + " points");
 
-        playerHealth.TakeDamageOrHeal(amount);
+        playerHealth.TakeDamageOrHeal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
-        healthPopup.Create(transform.position, amount, false);
+        healthPopup.Create(transform.position, healAmount, false);
     }
 
     public void Defend(int amount)
     {
         Debug.Log(gameObject.name + "is defending " + amount + " points");
-
+        playerHealth.shieldAmount += amount;
+        playerHealth.UpdateShield(playerHealth.shieldAmount);
     }
 }

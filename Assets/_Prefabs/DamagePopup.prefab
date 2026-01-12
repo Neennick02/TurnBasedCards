@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 2.5}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &9183112923465068284
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6805e47e4132fa444b217aafe60f37dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomOffset: {x: 0.1, y: 0.2, z: 0}
+  randomOffset: {x: 0.5, y: 0.2, z: 0}
   lifeTime: 2
   moveSpeed: 2
   fadeSpeed: 4
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 4.1090364, z: 17.677732, w: 0}
+  m_margin: {x: 9.0315695, y: 2.048292, z: 8.991566, w: 2.061051}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0

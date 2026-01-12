@@ -7,7 +7,7 @@ public class ManaManager : MonoBehaviour
 {
     public int CurrentMana;
     private int maxMana;
-    private int baseManaAmount = 3;
+    [SerializeField] private int baseManaAmount = 3;
     [SerializeField] private Image _manaBar;
     [SerializeField] private TextMeshProUGUI _manaCounter;
 

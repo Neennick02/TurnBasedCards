@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EnemyDeck : MonoBehaviour
@@ -10,7 +11,7 @@ public class EnemyDeck : MonoBehaviour
     private HealthPopup healthPopup;
 
     [SerializeField] private Health _playerHealth;
-
+    [SerializeField] private TextMeshProUGUI shieldCounter;
     private void Start()
     {
         _healthScript = GetComponent<Health>();
@@ -44,7 +45,7 @@ public class EnemyDeck : MonoBehaviour
             }
             else if(randomInt == 1)
             {
-                AddShield(healAmount);
+                _healthScript.AddShield(healAmount);
             }
             else
             {
@@ -60,19 +61,28 @@ public class EnemyDeck : MonoBehaviour
         turnManager.ChangeTurn();
     }
 
-    private void Attack(int amount)
+    private void Attack(int remainingDamage)
     {
-        Debug.Log(gameObject.name + "is attacking " + amount + "points");
+        Debug.Log(gameObject.name + "is attacking " + remainingDamage + "points");
 
-        if(_playerHealth.shieldAmount > 0)
+        if (_playerHealth.shieldAmount > remainingDamage)
         {
-            amount -= _playerHealth.shieldAmount;
+            remainingDamage -= _playerHealth.shieldAmount;
+            remainingDamage = 0;
+        }
+        else
+        {
+            _playerHealth.shieldAmount -= remainingDamage;
+            _playerHealth.shieldAmount = 0;
         }
 
-        _playerHealth.TakeDamageOrHeal(-amount);
+        _healthScript.UpdateShield(_playerHealth.shieldAmount);
+
+        if(remainingDamage > 0)
+        _playerHealth.TakeDamageOrHeal(-remainingDamage);
 
         Vector3 playerPosition = _playerHealth.transform.position;
-        healthPopup.Create(playerPosition, amount, true);
+        healthPopup.Create(playerPosition, remainingDamage, true);
     }
 
     private void Heal(int amount)
@@ -82,10 +92,5 @@ public class EnemyDeck : MonoBehaviour
         _healthScript.TakeDamageOrHeal(amount);
 
         healthPopup.Create(transform.position, amount, false);
-    }
-
-    private void AddShield(int amount)
-    {
-        _healthScript.shieldAmount += amount;
     }
 }

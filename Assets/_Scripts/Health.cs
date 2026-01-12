@@ -8,12 +8,13 @@ public class Health : MonoBehaviour
     [SerializeField] public int _health { get; private set; }
     public int shieldAmount = 0;
 
-    [SerializeField] Image healthBarImage;
-    [SerializeField] TextMeshProUGUI healthText;
-
+    [SerializeField] private Image healthBarImage;
+    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private TextMeshProUGUI shieldCounter;
     private void Start()
     {
         _health = _maxHealth;
+        UpdateShield(0);
     }
 
     private void Update()
@@ -40,5 +41,11 @@ public class Health : MonoBehaviour
     public void AddShield(int amount)
     {
         shieldAmount += amount;
+        UpdateShield(shieldAmount);
+    }
+
+    public void UpdateShield(int amount)
+    {
+        shieldCounter.text = amount.ToString();
     }
 }
