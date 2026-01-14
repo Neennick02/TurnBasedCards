@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using NUnit.Framework.Internal.Filters;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -34,7 +36,7 @@ public class Health : MonoBehaviour
             healthText.text = statsObject.Health.ToString();
         }
 
-        healthBarImage.fillAmount =(float)statsObject.Health / statsObject.MaxHealth;
+        //healthBarImage.fillAmount =(float)statsObject.Health / statsObject.MaxHealth;
 
         statsObject.Health = Mathf.Clamp(statsObject.Health, 0, statsObject.MaxHealth);
     }
@@ -42,6 +44,8 @@ public class Health : MonoBehaviour
     public void TakeDamageOrHeal(int amount)
     {
         statsObject.Health += amount;
+        StopAllCoroutines();
+        StartCoroutine(DrainBar(statsObject.Health, healthBarImage));
     }
 
     public void AddShield(int amount)
@@ -53,5 +57,25 @@ public class Health : MonoBehaviour
     public void UpdateShield(int amount)
     {
         shieldCounter.text = amount.ToString();
+    }
+
+    private IEnumerator DrainBar(int targetHealth, Image bar)
+    {
+        float timer = 0;
+        float duration = 0.5f;
+        float startAmount = bar.fillAmount;
+        float target = (float)targetHealth / statsObject.MaxHealth;
+
+        while(timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer /duration;
+            float newValue = Mathf.Lerp(startAmount, target, t);
+
+            bar.fillAmount = newValue;
+            yield return null;
+
+        }
+        bar.fillAmount = target;
     }
 }

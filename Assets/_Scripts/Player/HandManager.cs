@@ -19,18 +19,7 @@ public class HandManager : MonoBehaviour
     [SerializeField] public List<GameObject> handCards = new();
 
     [SerializeField] Vector3 zoomScale;
-
-    //card zoom variables
-    float zoomDuration = .5f;
-    Transform hoveredCard = null;
-
-    //private Dictionary<Transform, Tween> cardTweens = new();
-    Transform previousCard = null;
-    private Dictionary<Transform, int> originalSortOrders = new Dictionary<Transform, int>();
-
     [SerializeField] private Vector3 cardTargetZoomPos;
-
-    private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
 
     private void Start()
     {

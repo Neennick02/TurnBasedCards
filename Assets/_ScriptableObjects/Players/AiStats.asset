@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475ecd8b2316a0f4b8766d82e32f73bb, type: 3}
   m_Name: AiStats
   m_EditorClassIdentifier: 
-  MaxHealth: 100
-  Health: 87
+  MaxHealth: 30
+  Health: 15
   CurrentMana: 0
   MaxMana: 0
   BaseManaAmount: 0
