@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class ManaManager : MonoBehaviour
 {
-    public int CurrentMana;
-    private int maxMana;
-    [SerializeField] private int baseManaAmount = 3;
+    public PlayerStats stats;
     [SerializeField] private Image _manaBar;
     [SerializeField] private TextMeshProUGUI _manaCounter;
 
@@ -18,26 +16,21 @@ public class ManaManager : MonoBehaviour
 
     public void SetManaAmount(int amount)
     {
-        CurrentMana = amount + baseManaAmount; 
-        maxMana = amount + baseManaAmount;
+        stats.CurrentMana = amount + stats.BaseManaAmount; 
+        stats.MaxMana = amount + stats.BaseManaAmount;
 
         UpdateManaBar();
-        _manaCounter.text = CurrentMana.ToString();
+        _manaCounter.text = stats.CurrentMana.ToString();
     }
     public void DrainMana(int amount)
     {
-         CurrentMana -= amount;
-        _manaCounter.text = CurrentMana.ToString();
+         stats.CurrentMana -= amount;
+        _manaCounter.text = stats.CurrentMana.ToString();
         UpdateManaBar();
     }
 
     private void UpdateManaBar()
     {
-        _manaBar.fillAmount = (float)CurrentMana / maxMana;
-    }
-
-    IEnumerator DrainBar(int target)
-    {
-        yield return null;
+        _manaBar.fillAmount = (float)stats.CurrentMana / stats.MaxMana;
     }
 }

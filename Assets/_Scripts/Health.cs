@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public int _maxHealth { get; private set;} = 30;
-    [SerializeField] public int _health { get; private set; }
-    public int shieldAmount = 0;
+    public PlayerStats statsObject;
 
     [SerializeField] private Image healthBarImage;
     [SerializeField] private TextMeshProUGUI healthText;
@@ -19,37 +17,37 @@ public class Health : MonoBehaviour
     [SerializeField] CharacterAnimator characterAnimator;
     private void Start()
     {
-        _health = _maxHealth;
+        statsObject.Health = statsObject.MaxHealth;
         characterAnimator = GetComponentInChildren<CharacterAnimator>();
         UpdateShield(0);
     }
 
     private void Update()
     {
-        if(_health <= 0)
+        if(statsObject.Health <= 0)
         {
             Debug.Log("Player " + gameObject.name + "died");
             characterAnimator.DeathAnimation();
         }
         if(healthText != null)
         {
-            healthText.text = _health.ToString();
+            healthText.text = statsObject.Health.ToString();
         }
 
-        healthBarImage.fillAmount =(float) _health / _maxHealth;
+        healthBarImage.fillAmount =(float)statsObject.Health / statsObject.MaxHealth;
 
-        _health = Mathf.Clamp(_health, 0, _maxHealth);
+        statsObject.Health = Mathf.Clamp(statsObject.Health, 0, statsObject.MaxHealth);
     }
 
     public void TakeDamageOrHeal(int amount)
     {
-        _health += amount;
+        statsObject.Health += amount;
     }
 
     public void AddShield(int amount)
     {
-        shieldAmount += amount;
-        UpdateShield(shieldAmount);
+        statsObject.Defence += amount;
+        UpdateShield(statsObject.Defence);
     }
 
     public void UpdateShield(int amount)

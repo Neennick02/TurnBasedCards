@@ -30,8 +30,8 @@ public class EnemyDeck : MonoBehaviour
         float waitTime = Random.Range(0.2f, 1f);
         yield return new WaitForSeconds(waitTime);
 
-        int health = _healthScript._health;
-        int max = _healthScript._maxHealth;
+        int health = _healthScript.statsObject.Health;
+        int max = _healthScript.statsObject.MaxHealth;
 
         //check health
         if (health < max - (health / 3))
@@ -69,18 +69,18 @@ public class EnemyDeck : MonoBehaviour
     {
         characterAnimator.AttackAnimation();
 
-        if (_playerHealth.shieldAmount > remainingDamage)
+        if (_playerHealth.statsObject.Defence > remainingDamage)
         {
-            remainingDamage -= _playerHealth.shieldAmount;
+            remainingDamage -= _playerHealth.statsObject.Defence;
             remainingDamage = 0;
         }
         else
         {
-            _playerHealth.shieldAmount -= remainingDamage;
-            _playerHealth.shieldAmount = 0;
+            _playerHealth.statsObject.Defence -= remainingDamage;
+            _playerHealth.statsObject.Defence = 0;
         }
 
-        _healthScript.UpdateShield(_playerHealth.shieldAmount);
+        _healthScript.UpdateShield(_playerHealth.statsObject.Defence);
 
         if(remainingDamage > 0)
         _playerHealth.TakeDamageOrHeal(-remainingDamage);

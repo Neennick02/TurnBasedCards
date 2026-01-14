@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,7 +70,7 @@ public class PlayerDeckManager : MonoBehaviour
     private void UseCard(CardScriptableObject card, RaycastHit hit)
     {
         //check mana 
-        if (card.manaCost > manaManager.CurrentMana) return;
+        if (card.manaCost > manaManager.stats.CurrentMana) return;
 
         manaManager.DrainMana(card.manaCost);
 
@@ -199,21 +200,21 @@ public class PlayerDeckManager : MonoBehaviour
     {
         animator.AttackAnimation();
         //check player defense stats
-        if(enemyHealth.shieldAmount > remainingDamage)
+        if(enemyHealth.statsObject.Defence > remainingDamage)
         {
             //when shield is greater than damage
-            enemyHealth.shieldAmount -= remainingDamage;
+            enemyHealth.statsObject.Defence -= remainingDamage;
             remainingDamage = 0;
         }
         else
         {
             //when damage is greater than shield
-            remainingDamage -= enemyHealth.shieldAmount;
-            enemyHealth.shieldAmount = 0;
+            remainingDamage -= enemyHealth.statsObject.Defence;
+            enemyHealth.statsObject.Defence = 0;
         }
 
         //update shield amount
-        enemyHealth.UpdateShield(playerHealth.shieldAmount);
+        enemyHealth.UpdateShield(playerHealth.statsObject.Defence);
 
         //deal final damage amount
         if(remainingDamage > 0)
@@ -236,7 +237,7 @@ public class PlayerDeckManager : MonoBehaviour
     public void Defend(int amount)
     {
         animator.SpellAnimation();
-        playerHealth.shieldAmount += amount;
-        playerHealth.UpdateShield(playerHealth.shieldAmount);
+        playerHealth.statsObject.Defence += amount;
+        playerHealth.UpdateShield(playerHealth.statsObject.Defence);
     }
 }
