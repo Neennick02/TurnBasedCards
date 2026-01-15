@@ -5960,11 +5960,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animators:
   - {fileID: 889297756}
-  - {fileID: 0}
   - {fileID: 2029898259}
   CharacterModels:
   - {fileID: 889297753}
-  - {fileID: 0}
   - {fileID: 251852452}
 --- !u!1 &1442504283
 GameObject:
