@@ -8,7 +8,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public CardScriptableObject card { get; private set;}
 
     
-    [SerializeField] private TextMeshPro name;
+    [SerializeField] private TextMeshPro title;
     [SerializeField] private TextMeshPro description;
     [SerializeField] private TextMeshPro manaCost;
     [SerializeField] private TextMeshPro damage;
@@ -49,7 +49,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             deckManager.RemoveCardFromDeck(card);
 
             //add data onto card
-            name.text = card.name;
+            title.text = card.name;
             description.text = card.description;
             manaCost.text = card.manaCost.ToString();
             damage.text = card.attack.ToString();
@@ -59,7 +59,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetCustomData(CardScriptableObject so)
     {
-        name.text = so.name;
+        title.text = so.name;
         description.text = so.description;
         manaCost.text = so.manaCost.ToString();
         damage.text = so.attack.ToString();

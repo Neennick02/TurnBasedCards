@@ -29,7 +29,7 @@ public class EnemyDeckManager : MonoBehaviour
 
     private IEnumerator AiTurn()
     {
-        float waitTime = Random.Range(0.2f, 1f);
+        float waitTime = Random.Range(1f, 3f);
         yield return new WaitForSeconds(waitTime);
 
         int health = _healthScript.statsObject.Health;

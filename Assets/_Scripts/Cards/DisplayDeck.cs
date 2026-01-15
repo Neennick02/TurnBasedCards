@@ -45,5 +45,6 @@ public class DisplayDeck : MonoBehaviour
     {
         float newY = transform.position.y - (Input.mouseScrollDelta.y * moveSpeed);
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
     }
 }
