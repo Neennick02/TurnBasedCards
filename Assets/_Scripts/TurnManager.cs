@@ -26,7 +26,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private Button _nextTurnButton;
 
 
-    [SerializeField] private EnemyDeck _enemyDeck;
+    [SerializeField] private EnemyDeckManager _enemyDeck;
 
     public int roundCounter { get; private set; }
 

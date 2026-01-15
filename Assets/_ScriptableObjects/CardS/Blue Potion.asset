@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Blue Potion
   description: Heals 3 points and Defends 4 points.
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 8d356f14723169c428c2d67891320c3c, type: 3}
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 3
   attack: 0

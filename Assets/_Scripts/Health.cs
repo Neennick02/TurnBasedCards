@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     public List<GameObject> activeDotEffects = new List<GameObject>();
 
     [SerializeField] CharacterAnimator characterAnimator;
+    [SerializeField] GameObject deathParticles;
     [SerializeField] TurnManager turnManager;
 
     private bool isDead = false;
@@ -31,6 +32,7 @@ public class Health : MonoBehaviour
         {
             //play death animation
             characterAnimator.DeathAnimation();
+            Instantiate(deathParticles, transform);
             isDead = true;
 
             //wait before showing end screen

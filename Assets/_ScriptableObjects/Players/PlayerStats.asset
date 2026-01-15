@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 30
   Health: 30
-  CurrentMana: 0
-  MaxMana: 5
+  CurrentMana: 3
+  MaxMana: 3
   BaseManaAmount: 3
-  Defence: 6
+  Defence: 0

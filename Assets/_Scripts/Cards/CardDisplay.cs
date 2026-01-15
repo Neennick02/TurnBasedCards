@@ -23,12 +23,16 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     SortingGroup sortingGroup;
     DeckManager deckManager;
+    HandManager handManager;
+
+    private bool zoomed = false;
 
     private void Awake()
     {
         sortingGroup = GetComponent<SortingGroup>();
 
         deckManager = FindFirstObjectByType<DeckManager>();
+        handManager = FindFirstObjectByType<HandManager>();
 
         if( deckManager != null)
         {
@@ -65,21 +69,30 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        originalScale = transform.localScale;
-        originalPos = transform.localPosition;
+        if (!zoomed)
+        {
+            originalScale = transform.localScale;
+            originalPos = transform.localPosition;
 
-        transform.localScale = originalScale * hoverScale;
-        transform.localPosition = new Vector3(originalPos.x, originalPos.y + yOffset, originalPos.z);
+            transform.localScale = originalScale * hoverScale;
+            transform.localPosition = new Vector3(originalPos.x, originalPos.y + yOffset, originalPos.z);
 
 
-        sortingGroup.sortingOrder += 100;
+            sortingGroup.sortingOrder += 100;
+            zoomed = true;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = originalScale;
-        transform.localPosition = originalPos;
+        if (zoomed)
+        {
+            transform.localScale = originalScale;
+            transform.localPosition = originalPos;
 
-        sortingGroup.sortingOrder -= 100;
+            sortingGroup.sortingOrder -= 100;
+            handManager.UpdateCardPositions();
+            zoomed = false;
+        }
     }
 }

@@ -1,5 +1,7 @@
+using DG.Tweening;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +22,8 @@ public class PlayerDeckManager : MonoBehaviour
     [SerializeField] private ManaManager manaManager;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private CharacterAnimator animator;
+
+    [SerializeField] private GameObject healParticles, shieldParticles, attackParticles;
 
     private bool cardsDrawn;
     private void Start()
@@ -198,7 +202,9 @@ public class PlayerDeckManager : MonoBehaviour
     }
     public void Attack(int remainingDamage)
     {
+        //play animation
         animator.AttackAnimation();
+
         //check player defense stats
         if(enemyHealth.statsObject.Defence > remainingDamage)
         {
@@ -218,7 +224,12 @@ public class PlayerDeckManager : MonoBehaviour
 
         //deal final damage amount
         if(remainingDamage > 0)
-        enemyHealth.TakeDamageOrHeal(-remainingDamage);
+        {
+            enemyHealth.TakeDamageOrHeal(-remainingDamage);
+
+            //wait to match animation
+            StartCoroutine(AttackParticlesRoutine(0.9f));
+        }
 
         //spawn damage popup on enemy
         healthPopup.Create(enemyHealth.transform.position, remainingDamage, true);
@@ -229,6 +240,8 @@ public class PlayerDeckManager : MonoBehaviour
     public void Heal(int healAmount)
     {
         animator.HealAnimation();
+        Instantiate(healParticles, transform);
+
         playerHealth.TakeDamageOrHeal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
         healthPopup.Create(transform.position, healAmount, false);
@@ -237,7 +250,22 @@ public class PlayerDeckManager : MonoBehaviour
     public void Defend(int amount)
     {
         animator.SpellAnimation();
+        Instantiate(shieldParticles, new Vector3(
+            transform.position.x, 
+            transform.position.y + 1,
+            transform.position.z), Quaternion.identity);
+
         playerHealth.statsObject.Defence += amount;
         playerHealth.UpdateShield(playerHealth.statsObject.Defence);
+    }
+
+    IEnumerator AttackParticlesRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        //add particles
+        Instantiate(attackParticles, new Vector3(
+          enemyHealth.transform.position.x,
+          enemyHealth.transform.position.y + 1,
+           enemyHealth.transform.position.z), Quaternion.identity);
     }
 }

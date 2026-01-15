@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Elixir of Immortality
   description: Heals 12 health points in 1 turn.
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 8daa367dc4113ed4caebd4efa70eace8, type: 3}
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 5
   attack: 0

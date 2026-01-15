@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3a1764cb39b8146a6e10b82fc3d9e7, type: 3}
   m_Name: Bag OF Fruits
   m_EditorClassIdentifier: 
-  cardName: Bag Of Fruits
+  cardName: Basket Of Fruits
   description: Eat a fruit every turn for 5 turns. Heals 4 healthPoints.
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: fc213251f71b97a4a8f6fd6db4f8456d, type: 3}
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 5
   attack: 0

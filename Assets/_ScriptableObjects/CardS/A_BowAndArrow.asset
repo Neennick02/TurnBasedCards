@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Legendary Bow
   description: 'Use this bow for 5 turns, does 1 damage per turn. '
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: 62e0c360af2e49449a94221473f29b19, type: 3}
   cardAppearance: {fileID: 21300000, guid: 33f3aa84b4fc8c04cba1827a15485b1e, type: 3}
   manaCost: 4
   attack: 1
