@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 
 public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public List<CardScriptableObject> cards;
     public CardScriptableObject card { get; private set;}
 
     
@@ -23,25 +20,47 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private Vector3 originalScale;
     private Vector3 originalPos;
+
     SortingGroup sortingGroup;
+    DeckManager deckManager;
 
     private void Awake()
     {
-        SetCardData();
-
         sortingGroup = GetComponent<SortingGroup>();
+
+        deckManager = FindFirstObjectByType<DeckManager>();
+
+        if( deckManager != null)
+        {
+            SetCardData();
+        }
     }
 
     private void SetCardData()
     {
-        card = cards[Random.Range(0, cards.Count)];
+            //find random card
+            card = deckManager._RemainingDeckList[Random.Range(0, deckManager._RemainingDeckList.Count)];
 
-        name.text = card.name;
-        description.text = card.description;
-        manaCost.text = card.manaCost.ToString();
-        damage.text = card.attack.ToString();
-        artwork.sprite = card.artwork;
-        cardColor.sprite = card.cardAppearance;
+            //remove card from list
+            deckManager.RemoveCardFromDeck(card);
+
+            //add data onto card
+            name.text = card.name;
+            description.text = card.description;
+            manaCost.text = card.manaCost.ToString();
+            damage.text = card.attack.ToString();
+            artwork.sprite = card.artwork;
+            cardColor.sprite = card.cardAppearance;
+    }
+
+    public void SetCustomData(CardScriptableObject so)
+    {
+        name.text = so.name;
+        description.text = so.description;
+        manaCost.text = so.manaCost.ToString();
+        damage.text = so.attack.ToString();
+        artwork.sprite = so.artwork;
+        cardColor.sprite = so.cardAppearance;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -61,9 +80,6 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         transform.localScale = originalScale;
         transform.localPosition = originalPos;
 
-
-
         sortingGroup.sortingOrder -= 100;
-
     }
 }

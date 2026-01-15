@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerDeckManager : MonoBehaviour
 {
-    private List _deck = new List();
+    
 
     //health variables
     [SerializeField] private Health enemyHealth;

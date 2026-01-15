@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using NUnit.Framework.Internal.Filters;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +15,9 @@ public class Health : MonoBehaviour
     public List<GameObject> activeDotEffects = new List<GameObject>();
 
     [SerializeField] CharacterAnimator characterAnimator;
+    [SerializeField] TurnManager turnManager;
+
+    private bool isDead = false;
     private void Start()
     {
         statsObject.Health = statsObject.MaxHealth;
@@ -26,10 +27,31 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
-        if(statsObject.Health <= 0)
+        if(statsObject.Health <= 0 && !isDead)
         {
-            Debug.Log("Player " + gameObject.name + "died");
+            //play death animation
             characterAnimator.DeathAnimation();
+            isDead = true;
+
+            //wait before showing end screen
+            StartCoroutine(WaitRoutine(1f));
+
+            //if player open lose screen
+            if (this.gameObject.CompareTag("Player"))
+            {
+                turnManager.OpenLoseScreen();
+            }
+            //if Ai open win screen
+            else
+            {
+                turnManager.OpenWinScreen();
+            }
+
+            //disable cards
+            GameObject cardHolder = turnManager.transform.GetChild(0).gameObject;
+            if(cardHolder.CompareTag("CardHolder"))
+            cardHolder.SetActive(false);
+
         }
         if(healthText != null)
         {
@@ -77,5 +99,10 @@ public class Health : MonoBehaviour
 
         }
         bar.fillAmount = target;
+    }
+
+    IEnumerator WaitRoutine(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }

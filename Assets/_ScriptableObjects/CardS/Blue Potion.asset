@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b3a1764cb39b8146a6e10b82fc3d9e7, type: 3}
-  m_Name: FrostBite
+  m_Name: Blue Potion
   m_EditorClassIdentifier: 
-  cardName: FrostBite
-  description: Deals 6 damage points in 1 turn.
-  artwork: {fileID: 21300000, guid: 479412ffc9d476b4f9c0d3d16b978587, type: 3}
-  cardAppearance: {fileID: 21300000, guid: 43815734c9db6c341990e1d74135a5b3, type: 3}
-  manaCost: 4
-  attack: 6
-  heal: 0
-  defend: 0
+  cardName: Blue Potion
+  description: Heals 3 points and Defends 4 points.
+  artwork: {fileID: 0}
+  cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
+  manaCost: 3
+  attack: 0
+  heal: 3
+  defend: 4
   turns: 1
-  type1: 0
-  type2: 3
+  type1: 1
+  type2: 2

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-//using static System.Net.Mime.MediaTypeNames;
 
 public class TurnManager : MonoBehaviour
 {
@@ -12,6 +11,9 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private ManaManager _manaManager;
 
     [SerializeField] private GameObject PlayerTurnText, AiTurnText;
+
+    [SerializeField] private GameObject WinScreen;
+    [SerializeField] private GameObject LoseScreen;
     public ActivePlayer CurrentPlayer { get; private set; }
 
     public enum ActivePlayer
@@ -28,6 +30,8 @@ public class TurnManager : MonoBehaviour
 
     public int roundCounter { get; private set; }
 
+    private bool paused;
+    [SerializeField] private GameObject pauseScreen;
     private void Start()
     {
         CurrentPlayer = ActivePlayer.Player;
@@ -36,6 +40,59 @@ public class TurnManager : MonoBehaviour
         //disable turn text
         PlayerTurnText.SetActive(false);
         ShowText(PlayerTurnText, AiTurnText);
+
+        //disable end screens
+        WinScreen.SetActive(false);
+        LoseScreen.SetActive(false);
+
+        //disable pause screen
+        pauseScreen.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseAndUnpause();
+        }
+    }
+    public void PauseAndUnpause()
+    {
+        paused = !paused;
+
+        GameObject cardHolder = transform.GetChild(0).gameObject;
+        if (cardHolder.CompareTag("CardHolder"))
+
+            if (paused)
+        {
+            Time.timeScale = 0;
+            pauseScreen.SetActive(true);
+
+                ResetCardSize();
+                //disable cards
+                cardHolder.SetActive(false);
+        }
+        else
+        {
+            Time.timeScale = 1;
+            pauseScreen.SetActive(false);
+
+            ResetCardSize();
+
+            //enable cards
+            cardHolder.SetActive(true);
+        }
+    }
+
+    public void ResetCardSize()
+    {
+        //reset all card sizes
+        int children = transform.childCount;
+
+        for (int i = 0; i < children; i++)
+        {
+            transform.GetChild(i).localScale = Vector3.one;
+        }
     }
     public void ChangeTurn()
     {
@@ -131,5 +188,15 @@ public class TurnManager : MonoBehaviour
         Color txtColor = text.color;
         txtColor.a = alpha;
         text.color = txtColor;
+    }
+
+    public void OpenWinScreen()
+    {
+        WinScreen.SetActive(true);  
+    }
+
+    public void OpenLoseScreen()
+    {
+        LoseScreen.SetActive(true);
     }
 }

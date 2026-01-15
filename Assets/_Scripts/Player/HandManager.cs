@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Splines;
-using UnityEngine.EventSystems;
 
 public class HandManager : MonoBehaviour
 {
@@ -12,15 +11,11 @@ public class HandManager : MonoBehaviour
     [SerializeField] private GameObject cardPrefab;
 
     private SplineContainer splineContainer;
-
-
     [SerializeField] private Transform spawnPoint;
 
     [SerializeField] public List<GameObject> handCards = new();
 
-    [SerializeField] Vector3 zoomScale;
-    [SerializeField] private Vector3 cardTargetZoomPos;
-
+    
     private void Start()
     {
         splineContainer = GetComponentInChildren<SplineContainer>();
@@ -39,7 +34,6 @@ public class HandManager : MonoBehaviour
         {
             newHoveredCard = hit.transform;
         }
-
     }
     public void DrawCards()
     {
