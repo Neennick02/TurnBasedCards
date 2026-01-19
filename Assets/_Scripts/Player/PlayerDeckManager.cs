@@ -8,21 +8,19 @@ using UnityEngine.UI;
 
 public class PlayerDeckManager : MonoBehaviour
 {
-    
-
-    //health variables
     [SerializeField] private Health enemyHealth;
     private Health playerHealth;
     private HealthPopup healthPopup;
 
 
-    //scripts links
+    [Header("Script Links")]
     [SerializeField] private TurnManager turnManager;
     [SerializeField] private HandManager handManager;
     [SerializeField] private ManaManager manaManager;
     [SerializeField] private GameObject dotPrefab;
     [SerializeField] private CharacterAnimator animator;
 
+    [Header("Particle Effects")]
     [SerializeField] private GameObject healParticles, shieldParticles, attackParticles;
 
     private bool cardsDrawn;
@@ -199,49 +197,57 @@ public class PlayerDeckManager : MonoBehaviour
         //update hand
         handManager.UpdateCardPositions();
     }
-    public void Attack(int remainingDamage)
+    private void Attack(int damage)
     {
         //play animation
         animator.AttackAnimation();
 
-        //check player defense stats
-        if (enemyHealth.currentDefence > remainingDamage)
-        {
-            //when shield is greater than damage
-            enemyHealth.currentDefence -= remainingDamage;
-            remainingDamage = 0;
-        }
-        else
-        {
-            //when damage is greater than shield
-            remainingDamage -= enemyHealth.currentDefence;
-            enemyHealth.currentDefence = 0;
-        }
+        int remainingDamage = damage;
 
-        //update shield amount
-        enemyHealth.UpdateShield(playerHealth.currentDefence);
+        int absorbed = Mathf.Min(enemyHealth.currentDefence, remainingDamage);
+        playerHealth.currentDefence -= absorbed;
+        remainingDamage -= absorbed;
 
-        //deal final damage amount
-        if(remainingDamage > 0)
+        enemyHealth.UpdateShield(enemyHealth.currentDefence);
+        /*
+                //if player has more defence than damage
+                if (_playerHealth.currentDefence > damage)
+                {
+
+                    damage -= _playerHealth.currentDefence;
+                    damage = 0;
+                }
+                //if player has less defence than damage
+                else
+                {
+                    _playerHealth.currentDefence -= damage;
+                    _playerHealth.currentDefence = 0;
+                }
+
+                _healthScript.UpdateShield(_playerHealth.currentDefence);
+        */
+        //if there is damage remaining
+        if (remainingDamage > 0)
         {
-            enemyHealth.TakeDamageOrHeal(-remainingDamage);
+            enemyHealth.TakeDamage(-remainingDamage);
 
-            //wait to match animation
+            //wait to sync with animation
             StartCoroutine(AttackParticlesRoutine(0.9f));
         }
 
-        //spawn damage popup on enemy
-        healthPopup.Create(enemyHealth.transform.position, remainingDamage, true);
+        //create damage popup
+        Vector3 playerPosition = enemyHealth.transform.position;
+        healthPopup.Create(playerPosition, damage, true);
     }
 
-    
+
 
     public void Heal(int healAmount)
     {
         animator.HealAnimation();
         Instantiate(healParticles, transform);
 
-        playerHealth.TakeDamageOrHeal(healAmount);
+        playerHealth.Heal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
         healthPopup.Create(transform.position, healAmount, false);
     }

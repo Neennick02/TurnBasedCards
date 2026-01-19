@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,82 +30,93 @@ public class EnemyDeckManager : MonoBehaviour
 
     private IEnumerator AiTurn()
     {
+        //wait before starting turn
         float waitTime = Random.Range(1f, 3f);
+        
         yield return new WaitForSeconds(waitTime);
 
-        int health = _healthScript.statsObjects[_healthScript.currentEnemy].Health;
+        //get health values from healthScript
+        int health = _healthScript.currentHealth;
         int max = _healthScript.statsObjects[_healthScript.currentEnemy].MaxHealth;
 
-        //check health
-        if (health < max - (health / 3))
+        float healthPercent = (float)health / max;
+
+        //calculate random effect amount
+        int amount = Random.Range(3, 8);
+
+        //calculate decision int
+        int random = Random.Range(1, 3);
+
+        //check health amount
+        switch (healthPercent)
         {
-            int healAmount = Random.Range(1, 10);
+            case var expression when healthPercent > 80:// if higher that 80%
+                Attack(amount); //always attack
+                break;
 
-            int randomInt = Random.Range(0, 2);
+            case var expression when healthPercent < 80 && healthPercent > 50:// if between 50% & 80%
+                if (random == 1) Attack(amount); //random decision (33%)
+                if(random == 2) Heal(amount);
+                if(random == 3) Defend(amount);
+                break;
 
-            if(randomInt == 0)
-            {
-                Heal(healAmount);
-            }
-            else if(randomInt == 1)
-            {
-                characterAnimator.SpellAnimation();
+            case var expression when healthPercent < 50 && healthPercent > 20:// if between 20% & 50%
 
-                //add particle effect
-                Instantiate(attackParticles, new Vector3(
-                    transform.position.x,
-                    transform.position.y + 1,
-                    transform.position.z),
-                    Quaternion.identity);
+                if (random >= 1 && random <= 2) Heal(amount); //heal 66% of the time
+                else Defend(amount);                          //defend 33%
+                break;
 
-                _healthScript.AddShield(healAmount);
-                Debug.Log("Shield added " + healAmount);
-            }
-            else
-            {
-                Attack(healAmount);
-            }
+            case var expression when healthPercent < 20 && healthPercent > 0:// if between 0% & 20%
+                Heal(amount); //always heal
+                break;
         }
-        //if full health
-        else
-        {
-            int damageAmount = Random.Range(1, 10);
-            Attack(damageAmount);
-        }
+
         yield return new WaitForSeconds(waitTime);
 
         turnManager.ChangeTurn();
     }
 
-    private void Attack(int remainingDamage)
+    private void Attack(int damage)
     {
+        //play animation
         characterAnimator.AttackAnimation();
 
+        int remainingDamage = damage;
 
-        if (_playerHealth.currentDefence > remainingDamage)
+        int absorbed = Mathf.Min(_playerHealth.currentDefence, remainingDamage);
+        _playerHealth.currentDefence -= absorbed;
+        remainingDamage -= absorbed;
+
+        _healthScript.UpdateShield(_playerHealth.currentDefence);
+/*
+        //if player has more defence than damage
+        if (_playerHealth.currentDefence > damage)
         {
-            remainingDamage -= _playerHealth.currentDefence;
-            remainingDamage = 0;
+
+            damage -= _playerHealth.currentDefence;
+            damage = 0;
         }
+        //if player has less defence than damage
         else
         {
-            _playerHealth.currentDefence -= remainingDamage;
+            _playerHealth.currentDefence -= damage;
             _playerHealth.currentDefence = 0;
         }
 
         _healthScript.UpdateShield(_playerHealth.currentDefence);
-
+*/
+        //if there is damage remaining
         if(remainingDamage > 0)
         {
-            _playerHealth.TakeDamageOrHeal(-remainingDamage);
+            _playerHealth.TakeDamage(-remainingDamage);
 
             //wait to sync with animation
             StartCoroutine(Wait(0.9f));
         }
         
-
+        //create damage popup
         Vector3 playerPosition = _playerHealth.transform.position;
-        healthPopup.Create(playerPosition, remainingDamage, true);
+        healthPopup.Create(playerPosition, damage, true);
     }
 
     private void Heal(int amount)
@@ -113,9 +125,14 @@ public class EnemyDeckManager : MonoBehaviour
         characterAnimator.HealAnimation();
         Instantiate(HealParticles, transform);
 
-        _healthScript.TakeDamageOrHeal(amount);
+        _healthScript.Heal(amount);
 
         healthPopup.Create(transform.position, amount, false);
+    }
+
+    private void Defend(int amount)
+    {
+        _healthScript.AddShield(amount);
     }
     IEnumerator Wait(float time)
     {

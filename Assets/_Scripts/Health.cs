@@ -49,10 +49,18 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth, 0, statsObjects[currentEnemy].MaxHealth);
     }
 
-    public void TakeDamageOrHeal(int amount)
+    public void Heal(int amount)
     {
         UpdateShield(currentDefence);
         currentHealth += amount;
+        StopAllCoroutines();
+        StartCoroutine(DrainBar(currentHealth, healthBarImage));
+    }
+
+    public void TakeDamage(int amount)
+    {
+        UpdateShield(currentDefence);
+        currentHealth -= amount;
         StopAllCoroutines();
         StartCoroutine(DrainBar(currentHealth, healthBarImage));
     }

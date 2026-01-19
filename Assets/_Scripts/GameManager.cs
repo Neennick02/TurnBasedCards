@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         FightCount++;
 
+        //enable cards
+        GameObject cardHolder = turnManager.transform.GetChild(0).gameObject;
+        if (cardHolder.CompareTag("CardHolder"))
+            cardHolder.SetActive(true);
+
         //enable new enemy model and animator
         enemyAnimator.SwitchCharacter(FightCount);
 

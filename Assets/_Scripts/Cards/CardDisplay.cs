@@ -24,22 +24,30 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     SortingGroup sortingGroup;
     DeckManager deckManager;
     HandManager handManager;
+    StretchImage stretchImage;
 
     private bool zoomed = false;
 
     private void Awake()
     {
         sortingGroup = GetComponent<SortingGroup>();
-
         deckManager = FindFirstObjectByType<DeckManager>();
         handManager = FindFirstObjectByType<HandManager>();
-
-        if( deckManager != null)
+        stretchImage = GetComponentInChildren<StretchImage>();
+    }
+    private void Start()
+    {
+        if (deckManager != null)
         {
             SetCardData();
         }
+        else stretchImage.Fit();
     }
 
+    private void StretchImage()
+    {
+        stretchImage.Fit();
+    }
     private void SetCardData()
     {
             //find random card
@@ -55,6 +63,9 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             damage.text = card.attack.ToString();
             artwork.sprite = card.artwork;
             cardColor.sprite = card.cardAppearance;
+
+        //stretch image to sprite mask
+        Invoke("StretchImage", 0.1f);
     }
 
     public void SetCustomData(CardScriptableObject so)

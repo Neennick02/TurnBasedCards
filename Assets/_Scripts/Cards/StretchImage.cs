@@ -4,12 +4,7 @@ public class StretchImage : MonoBehaviour
 {
     [SerializeField] private SpriteMask mask;
 
-    private void Start()
-    {
-        Fit();
-    }
-
-    private void Fit()
+    public void Fit()
     {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
 

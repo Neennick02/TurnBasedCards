@@ -1019,7 +1019,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 100, y: 777.41}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &199084971
@@ -4884,58 +4884,58 @@ MonoBehaviour:
     m_Knots:
     - Position:
         x: -1.8
-        y: 2.8
+        y: 3
         z: 1
       TangentIn:
         x: -0
         y: -0
-        z: -0.18939114
+        z: -0.18806648
       TangentOut:
         x: 0
         y: 0
-        z: 0.18939114
+        z: 0.18806648
       Rotation:
         value:
-          x: 0.45853695
-          y: 0.5382786
-          z: 0.5380123
-          w: 0.4588493
+          x: 0.47251564
+          y: 0.52605027
+          z: 0.5257792
+          w: 0.47281733
     - Position:
         x: 0.07
-        y: 3.1
+        y: 3.2
         z: 1
       TangentIn:
         x: -0
         y: -0
-        z: -0.61090505
+        z: -0.6110715
       TangentOut:
         x: 0
         y: 0
-        z: 0.5882118
+        z: 0.5880318
       Rotation:
         value:
-          x: 0.49827197
-          y: 0.5017221
-          z: 0.49509352
-          w: 0.5048588
+          x: 0.4977699
+          y: 0.5022202
+          z: 0.49561855
+          w: 0.5043434
     - Position:
         x: 1.8
-        y: 2.8
+        y: 3
         z: 1
       TangentIn:
         x: -0
         y: -0
-        z: -0.17558189
+        z: -0.17415223
       TangentOut:
         x: 0
         y: 0
-        z: 0.17558189
+        z: 0.17415223
       Rotation:
         value:
-          x: 0.54104054
-          y: 0.4552747
-          z: 0.45529625
-          w: 0.5410224
+          x: 0.5279396
+          y: 0.47040385
+          z: 0.4704245
+          w: 0.52792126
     m_MetaData:
     - Mode: 0
       Tension: 0.5
@@ -6555,7 +6555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 712, y: -332}
+  m_AnchoredPosition: {x: 731.13, y: 227.9}
   m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1490776306
