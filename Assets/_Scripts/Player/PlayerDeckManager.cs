@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerDeckManager : MonoBehaviour
@@ -127,11 +128,12 @@ public class PlayerDeckManager : MonoBehaviour
 
     public void ProcessEffectOverTime()
     {
-        //loop over wait list
+        //loop over effects que
         for (int i = enemyHealth.activeDotEffects.Count - 1; i >= 0; i--)
         {
             OverTimeEffect dot = enemyHealth.activeDotEffects[i].GetComponent<OverTimeEffect>();
             GameObject instance = enemyHealth.activeDotEffects[i];
+
             //apply damage
             switch (dot.Type) 
             {
@@ -209,23 +211,7 @@ public class PlayerDeckManager : MonoBehaviour
         remainingDamage -= absorbed;
 
         enemyHealth.UpdateShield(enemyHealth.currentDefence);
-        /*
-                //if player has more defence than damage
-                if (_playerHealth.currentDefence > damage)
-                {
 
-                    damage -= _playerHealth.currentDefence;
-                    damage = 0;
-                }
-                //if player has less defence than damage
-                else
-                {
-                    _playerHealth.currentDefence -= damage;
-                    _playerHealth.currentDefence = 0;
-                }
-
-                _healthScript.UpdateShield(_playerHealth.currentDefence);
-        */
         //if there is damage remaining
         if (remainingDamage > 0)
         {

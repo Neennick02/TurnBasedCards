@@ -15,9 +15,10 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SpriteRenderer artwork;
     [SerializeField] private SpriteRenderer cardColor;
 
+    [Header("Zoom settings")]
     public float hoverScale = 1.2f;
     public float yOffset = .1f;
-
+    public float zOffset = 0.1f;
     private Vector3 originalScale;
     private Vector3 originalPos;
 
@@ -26,7 +27,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     HandManager handManager;
     StretchImage stretchImage;
 
-    private bool zoomed = false;
+    public bool zoomed = false;
 
     private void Awake()
     {
@@ -70,6 +71,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetCustomData(CardScriptableObject so)
     {
+        //set data from scriptable object (only used in deck scene)
         title.text = so.name;
         description.text = so.description;
         manaCost.text = so.manaCost.ToString();
@@ -80,30 +82,30 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!zoomed)
-        {
+        if (zoomed) return;
+        Debug.Log("zoom");
             originalScale = transform.localScale;
             originalPos = transform.localPosition;
 
             transform.localScale = originalScale * hoverScale;
-            transform.localPosition = new Vector3(originalPos.x, originalPos.y + yOffset, originalPos.z);
+            transform.localPosition = new Vector3(
+                originalPos.x,
+                originalPos.y + yOffset,
+                originalPos.z - zOffset);
 
 
             sortingGroup.sortingOrder += 100;
             zoomed = true;
-        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (zoomed)
-        {
+        if (!zoomed) return;
             transform.localScale = originalScale;
             transform.localPosition = originalPos;
 
             sortingGroup.sortingOrder -= 100;
             handManager.UpdateCardPositions();
             zoomed = false;
-        }
     }
 }

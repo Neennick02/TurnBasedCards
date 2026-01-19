@@ -20,21 +20,6 @@ public class HandManager : MonoBehaviour
     {
         splineContainer = GetComponentInChildren<SplineContainer>();
     }
-    private void Update()
-    {
-
-        // Handle hover raycast
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        Transform newHoveredCard = null;
-
-        //check for card
-        if (Physics.Raycast(ray, out hit, 100f) && hit.transform.CompareTag("Card"))
-        {
-            newHoveredCard = hit.transform;
-        }
-    }
     public void DrawCards()
     {
         //picks up cards
