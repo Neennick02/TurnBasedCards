@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ai_1_Stats
   m_EditorClassIdentifier: 
   MaxHealth: 30
-  Health: 30
+  Health: 26
   CurrentMana: 0
   MaxMana: 0
   BaseManaAmount: 0

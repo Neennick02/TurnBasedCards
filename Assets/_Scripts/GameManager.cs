@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -5,22 +6,62 @@ public class GameManager : MonoBehaviour
    public int FightCount {  get; private set; }
     [SerializeField] CharacterAnimator enemyAnimator;
 
+    [SerializeField] private Health playerHealth;
+    [SerializeField] private Health enemyHealth;
+    [SerializeField] private ManaManager ManaManager;
+     private TurnManager turnManager;
+     private HandManager handManager;
+     private DeckManager deckManager;
     private void Start()
     {
         FightCount = 0;
+
+        handManager = GetComponent<HandManager>();
+        turnManager = GetComponent<TurnManager>();
+        deckManager = GetComponent<DeckManager>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            FightCount++;
-            enemyAnimator.SwitchCharacter(FightCount);
-        }
+
     }
 
     public void StartNewFight()
     {
+        StartCoroutine(ResetValues());
 
+    }
+
+    private void ResetPlayer()
+    {
+        playerHealth.ResetHealth();
+        ManaManager.ResetMana();
+    }
+    IEnumerator ResetValues()
+    {
+        yield return new WaitForSeconds(1.5f);
+        FightCount++;
+
+        //enable new enemy model and animator
+        enemyAnimator.SwitchCharacter(FightCount);
+
+        //reset player stats
+        ResetPlayer();
+
+        //reset game values
+        ResetGame();
+        enemyHealth.EnableNewCharacterStats();
+    }
+
+    private void ResetGame()
+    {
+        //reset to turn 1
+        turnManager.ResetTurns();
+
+        //remove cards and pick new
+        handManager.ResetHand();
+
+        //refill deck
+        deckManager.ResetDeck();
     }
 }

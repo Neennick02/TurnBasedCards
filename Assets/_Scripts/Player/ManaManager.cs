@@ -31,6 +31,12 @@ public class ManaManager : MonoBehaviour
         StartCoroutine(DrainBar(stats.CurrentMana, _manaBar));
 
     }
+
+    public void ResetMana()
+    {
+        stats.BaseManaAmount = 3;
+        stats.MaxMana = stats.BaseManaAmount;
+    }
     private IEnumerator DrainBar(int targetMana, Image bar)
     {
         float timer = 0;

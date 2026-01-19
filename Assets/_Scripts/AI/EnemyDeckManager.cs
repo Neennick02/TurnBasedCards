@@ -32,8 +32,8 @@ public class EnemyDeckManager : MonoBehaviour
         float waitTime = Random.Range(1f, 3f);
         yield return new WaitForSeconds(waitTime);
 
-        int health = _healthScript.statsObject.Health;
-        int max = _healthScript.statsObject.MaxHealth;
+        int health = _healthScript.statsObjects[_healthScript.currentEnemy].Health;
+        int max = _healthScript.statsObjects[_healthScript.currentEnemy].MaxHealth;
 
         //check health
         if (health < max - (health / 3))
@@ -58,6 +58,7 @@ public class EnemyDeckManager : MonoBehaviour
                     Quaternion.identity);
 
                 _healthScript.AddShield(healAmount);
+                Debug.Log("Shield added " + healAmount);
             }
             else
             {
@@ -80,18 +81,18 @@ public class EnemyDeckManager : MonoBehaviour
         characterAnimator.AttackAnimation();
 
 
-        if (_playerHealth.statsObject.Defence > remainingDamage)
+        if (_playerHealth.currentDefence > remainingDamage)
         {
-            remainingDamage -= _playerHealth.statsObject.Defence;
+            remainingDamage -= _playerHealth.currentDefence;
             remainingDamage = 0;
         }
         else
         {
-            _playerHealth.statsObject.Defence -= remainingDamage;
-            _playerHealth.statsObject.Defence = 0;
+            _playerHealth.currentDefence -= remainingDamage;
+            _playerHealth.currentDefence = 0;
         }
 
-        _healthScript.UpdateShield(_playerHealth.statsObject.Defence);
+        _healthScript.UpdateShield(_playerHealth.currentDefence);
 
         if(remainingDamage > 0)
         {
@@ -110,11 +111,7 @@ public class EnemyDeckManager : MonoBehaviour
     {
         //visual effects
         characterAnimator.HealAnimation();
-        Instantiate(HealParticles, new Vector3(
-                    transform.position.x,
-                    transform.position.y + 1,
-                    transform.position.z),
-                    Quaternion.identity);
+        Instantiate(HealParticles, transform);
 
         _healthScript.TakeDamageOrHeal(amount);
 

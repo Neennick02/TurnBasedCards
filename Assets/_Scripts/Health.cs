@@ -6,13 +6,20 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public PlayerStats statsObject;
+    public List<PlayerStats> statsObjects = new List<PlayerStats>();
+    public int currentEnemy = 0;
+     public int currentHealth { get; private set;}
+    public int currentDefence;
 
+    [Header("Links to Objects")]
     [SerializeField] private Image healthBarImage;
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI shieldCounter;
 
+    [Header("Que for pending effects")]
     public List<GameObject> activeDotEffects = new List<GameObject>();
+
+    [Header("Links to scripts")] 
 
     [SerializeField] CharacterAnimator characterAnimator;
     [SerializeField] GameObject deathParticles;
@@ -21,66 +28,86 @@ public class Health : MonoBehaviour
     private bool isDead = false;
     private void Start()
     {
-        statsObject.Health = statsObject.MaxHealth;
+        currentHealth = statsObjects[currentEnemy].MaxHealth;
         characterAnimator = GetComponentInChildren<CharacterAnimator>();
         UpdateShield(0);
     }
 
     private void Update()
     {
-        if(statsObject.Health <= 0 && !isDead)
+        //check health
+        if (currentHealth <= 0 && !isDead)
         {
-            //play death animation
-            characterAnimator.DeathAnimation();
-            Instantiate(deathParticles, transform);
-            isDead = true;
-
-            //wait before showing end screen
-            StartCoroutine(WaitRoutine(1f));
-
-            //if player open lose screen
-            if (this.gameObject.CompareTag("Player"))
-            {
-                turnManager.OpenLoseScreen();
-            }
-            //if Ai open win screen
-            else
-            {
-                turnManager.OpenWinScreen();
-            }
-
-            //disable cards
-            GameObject cardHolder = turnManager.transform.GetChild(0).gameObject;
-            if(cardHolder.CompareTag("CardHolder"))
-            cardHolder.SetActive(false);
-
+            HandleDeath();
         }
-        if(healthText != null)
+        //update health amount
+        if (healthText != null)
         {
-            healthText.text = statsObject.Health.ToString();
+            healthText.text = currentHealth.ToString();
         }
 
-        //healthBarImage.fillAmount =(float)statsObject.Health / statsObject.MaxHealth;
-
-        statsObject.Health = Mathf.Clamp(statsObject.Health, 0, statsObject.MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, statsObjects[currentEnemy].MaxHealth);
     }
 
     public void TakeDamageOrHeal(int amount)
     {
-        statsObject.Health += amount;
+        UpdateShield(currentDefence);
+        currentHealth += amount;
         StopAllCoroutines();
-        StartCoroutine(DrainBar(statsObject.Health, healthBarImage));
+        StartCoroutine(DrainBar(currentHealth, healthBarImage));
     }
 
     public void AddShield(int amount)
     {
-        statsObject.Defence += amount;
-        UpdateShield(statsObject.Defence);
+        currentDefence += amount;
+        UpdateShield(currentDefence);
     }
 
+    public void ResetHealth()
+    {
+        //add extra max health on second fight
+        if (this.gameObject.CompareTag("Player"))
+        {
+            statsObjects[0].MaxHealth += 10;
+        }
+
+       currentHealth = statsObjects[currentEnemy].MaxHealth;
+
+       currentDefence = 0;
+    }
+
+    public void EnableNewCharacterStats()
+    {
+        //use new stats scriptable object
+        currentEnemy++;
+
+        //reset health
+        currentHealth = statsObjects[currentEnemy].MaxHealth;
+        StartCoroutine(DrainBar(currentHealth, healthBarImage));
+
+        //reset shield
+        UpdateShield(0);
+    }
     public void UpdateShield(int amount)
     {
+        currentDefence = amount;
         shieldCounter.text = amount.ToString();
+    }
+
+    public void HandleDeath()
+    {
+        //play death animation
+        characterAnimator.DeathAnimation();
+        Instantiate(deathParticles, transform);
+        isDead = true;
+
+        //wait before showing end screen
+        StartCoroutine(OpenEndScreen(3f));
+
+        //disable cards
+        GameObject cardHolder = turnManager.transform.GetChild(0).gameObject;
+        if (cardHolder.CompareTag("CardHolder"))
+            cardHolder.SetActive(false);
     }
 
     private IEnumerator DrainBar(int targetHealth, Image bar)
@@ -88,7 +115,7 @@ public class Health : MonoBehaviour
         float timer = 0;
         float duration = 0.5f;
         float startAmount = bar.fillAmount;
-        float target = (float)targetHealth / statsObject.MaxHealth;
+        float target = (float)targetHealth / statsObjects[currentEnemy].MaxHealth;
 
         while(timer < duration)
         {
@@ -98,13 +125,22 @@ public class Health : MonoBehaviour
 
             bar.fillAmount = newValue;
             yield return null;
-
         }
         bar.fillAmount = target;
     }
 
-    IEnumerator WaitRoutine(float time)
+    IEnumerator OpenEndScreen(float time)
     {
         yield return new WaitForSeconds(time);
+        //if player open lose screen
+        if (this.gameObject.CompareTag("Player"))
+        {
+            turnManager.OpenLoseScreen();
+        }
+        //if Ai open win screen
+        else
+        {
+            turnManager.OpenWinScreen();
+        }
     }
 }

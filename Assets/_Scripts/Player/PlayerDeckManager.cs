@@ -134,7 +134,6 @@ public class PlayerDeckManager : MonoBehaviour
         {
             OverTimeEffect dot = enemyHealth.activeDotEffects[i].GetComponent<OverTimeEffect>();
             GameObject instance = enemyHealth.activeDotEffects[i];
-            Debug.Log("used");
             //apply damage
             switch (dot.Type) 
             {
@@ -206,21 +205,21 @@ public class PlayerDeckManager : MonoBehaviour
         animator.AttackAnimation();
 
         //check player defense stats
-        if(enemyHealth.statsObject.Defence > remainingDamage)
+        if (enemyHealth.currentDefence > remainingDamage)
         {
             //when shield is greater than damage
-            enemyHealth.statsObject.Defence -= remainingDamage;
+            enemyHealth.currentDefence -= remainingDamage;
             remainingDamage = 0;
         }
         else
         {
             //when damage is greater than shield
-            remainingDamage -= enemyHealth.statsObject.Defence;
-            enemyHealth.statsObject.Defence = 0;
+            remainingDamage -= enemyHealth.currentDefence;
+            enemyHealth.currentDefence = 0;
         }
 
         //update shield amount
-        enemyHealth.UpdateShield(playerHealth.statsObject.Defence);
+        enemyHealth.UpdateShield(playerHealth.currentDefence);
 
         //deal final damage amount
         if(remainingDamage > 0)
@@ -255,8 +254,8 @@ public class PlayerDeckManager : MonoBehaviour
             transform.position.y + 1,
             transform.position.z), Quaternion.identity);
 
-        playerHealth.statsObject.Defence += amount;
-        playerHealth.UpdateShield(playerHealth.statsObject.Defence);
+        playerHealth.statsObjects[enemyHealth.currentEnemy].Defence += amount;
+        playerHealth.UpdateShield(playerHealth.statsObjects[enemyHealth.currentEnemy].Defence);
     }
 
     IEnumerator AttackParticlesRoutine(float time)

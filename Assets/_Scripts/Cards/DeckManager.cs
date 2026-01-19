@@ -9,7 +9,7 @@ public class DeckManager : MonoBehaviour
 
     private void Start()
     {
-        _RemainingDeckList = new List<CardScriptableObject> (CompleteDeckList);
+        ResetDeck();
     }
     public void RemoveCardFromDeck(CardScriptableObject card)
     {
@@ -17,7 +17,12 @@ public class DeckManager : MonoBehaviour
 
         if(_RemainingDeckList.Count <= 1)
         {
-            _RemainingDeckList = new List<CardScriptableObject>(CompleteDeckList);
+            ResetDeck();
         }
+    }
+
+    public void ResetDeck()
+    {
+        _RemainingDeckList = new List<CardScriptableObject>(CompleteDeckList);
     }
 }

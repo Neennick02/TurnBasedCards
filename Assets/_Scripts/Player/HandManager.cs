@@ -45,6 +45,7 @@ public class HandManager : MonoBehaviour
 
     private IEnumerator DrawCardsRoutine()
     {
+        yield return new WaitForSeconds(0.6f);
         while (handCards.Count < maxHandSize)
         {
             GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
@@ -102,5 +103,13 @@ public class HandManager : MonoBehaviour
                 sortingGroup.sortingOrder = i;
             }
         }
+    }
+    public void ResetHand()
+    {
+        //remove all cards from hand
+        handCards.Clear();
+
+        //pick new cards
+        StartCoroutine(DrawCardsRoutine());
     }
 }

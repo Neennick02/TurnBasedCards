@@ -190,6 +190,12 @@ public class TurnManager : MonoBehaviour
         text.color = txtColor;
     }
 
+    public void ResetTurns()
+    {
+        roundCounter = 0;
+        CurrentPlayer = ActivePlayer.Player;
+    }
+
     public void OpenWinScreen()
     {
         WinScreen.SetActive(true);  

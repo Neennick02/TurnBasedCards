@@ -897,7 +897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2578af96944aab446b91bebc98623cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 5356673431868054195}
+  title: {fileID: 5356673431868054195}
   description: {fileID: 5563886104616693940}
   manaCost: {fileID: 6755411424077259974}
   damage: {fileID: 3887866999177012194}
