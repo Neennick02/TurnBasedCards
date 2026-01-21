@@ -20,7 +20,7 @@ MonoBehaviour:
   manaCost: 1
   attack: 0
   heal: 0
-  defend: 4
+  defend: 5
   turns: 1
   type1: 2
   type2: 3

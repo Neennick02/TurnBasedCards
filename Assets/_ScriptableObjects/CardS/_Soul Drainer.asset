@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: _Soul Drainer
   m_EditorClassIdentifier: 
   cardName: Soul Drainer
-  description: Heals 2 point for 2 rounds and does 4 damage.
+  description: Heals 4 point for 2 rounds and does 7 damage.
   artwork: {fileID: 21300000, guid: 6c34d2bd196edbe40b40a2ffb3391bbf, type: 3}
   cardAppearance: {fileID: 21300000, guid: 43815734c9db6c341990e1d74135a5b3, type: 3}
   manaCost: 5
-  attack: 4
-  heal: 2
+  attack: 7
+  heal: 4
   defend: 0
   turns: 2
   type1: 1

@@ -11,6 +11,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private ManaManager _manaManager;
 
     [Header("Ui Elements")]
+    [SerializeField] private TextMeshProUGUI counterText;
+    [SerializeField] private GameObject nextTurnButton;
     [SerializeField] private GameObject PlayerTurnText, AiTurnText;
     [SerializeField] private GameObject FinalWinScreen;
     [SerializeField] private GameObject WinScreen;
@@ -36,8 +38,8 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         CurrentPlayer = ActivePlayer.Player;
-        roundCounter = 0;
-
+        roundCounter = 1;
+        counterText.text = "Round  " + roundCounter.ToString();
         //disable turn text
         PlayerTurnText.SetActive(false);
         ShowText(PlayerTurnText, AiTurnText);
@@ -98,6 +100,7 @@ public class TurnManager : MonoBehaviour
     }
     public void ChangeTurn()
     {
+
         //change turn
         if (CurrentPlayer == ActivePlayer.Player) CurrentPlayer = ActivePlayer.Ai;
         else CurrentPlayer = ActivePlayer.Player;
@@ -106,13 +109,15 @@ public class TurnManager : MonoBehaviour
         //if players turn enable deck
         if (CurrentPlayer == ActivePlayer.Player)
         {
+            nextTurnButton.SetActive(true);
             ShowText(PlayerTurnText, AiTurnText);
 
             //update round
             roundCounter++;
+            counterText.text = "Round  " + roundCounter.ToString();
 
             //increase mana
-            _manaManager.SetManaAmount(roundCounter);
+            _manaManager.SetManaAmount(roundCounter -1);
         }
 
         //

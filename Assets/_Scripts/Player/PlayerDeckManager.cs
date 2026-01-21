@@ -259,8 +259,8 @@ public class PlayerDeckManager : MonoBehaviour
             transform.position.y + 1,
             transform.position.z), Quaternion.identity);
 
-        playerHealth.statsObjects[enemyHealth.currentEnemy].Defence += amount;
-        playerHealth.UpdateShield(playerHealth.statsObjects[enemyHealth.currentEnemy].Defence);
+        playerHealth.currentDefence += amount;
+        playerHealth.UpdateShield(playerHealth.currentDefence);
     }
 
     IEnumerator AttackParticlesRoutine(float time)

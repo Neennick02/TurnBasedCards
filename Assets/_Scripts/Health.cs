@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     public List<PlayerStats> statsObjects = new List<PlayerStats>();
     public int currentEnemy = 0;
      public int currentHealth { get; private set;}
+    public int currentMaxHealth;
     public int currentDefence;
 
     [Header("Links to Objects")]
@@ -25,7 +26,8 @@ public class Health : MonoBehaviour
     private bool isDead = false;
     private void Start()
     {
-        currentHealth = statsObjects[currentEnemy].MaxHealth;
+        currentMaxHealth = statsObjects[currentEnemy].MaxHealth;
+        currentHealth = currentMaxHealth;
         characterAnimator = GetComponentInChildren<CharacterAnimator>();
         UpdateShield(0);
     }
@@ -43,7 +45,7 @@ public class Health : MonoBehaviour
             healthText.text = currentHealth.ToString();
         }
 
-        currentHealth = Mathf.Clamp(currentHealth, 0, statsObjects[currentEnemy].MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, currentMaxHealth);
     }
 
     public void Heal(int amount)
@@ -73,7 +75,7 @@ public class Health : MonoBehaviour
         //add extra max health on second fight
         if (this.gameObject.CompareTag("Player"))
         {
-            statsObjects[0].MaxHealth += 10;
+            currentMaxHealth += 10;
         }
     }
 
@@ -83,9 +85,10 @@ public class Health : MonoBehaviour
         currentEnemy++;
 
         //reset health
-        currentHealth = statsObjects[currentEnemy].MaxHealth;
-        StartCoroutine(DrainBar(currentHealth, healthBarImage));
-
+        currentMaxHealth = statsObjects[currentEnemy].MaxHealth;
+        currentHealth = currentMaxHealth;
+        healthBarImage.fillAmount = 1;
+        healthText.text = currentHealth.ToString();
         //reset shield
         UpdateShield(0);
 
@@ -118,7 +121,7 @@ public class Health : MonoBehaviour
         float timer = 0;
         float duration = 0.5f;
         float startAmount = bar.fillAmount;
-        float target = (float)targetHealth / statsObjects[currentEnemy].MaxHealth;
+        float target = (float)targetHealth / currentMaxHealth;
 
         while(timer < duration)
         {

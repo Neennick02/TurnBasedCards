@@ -42,7 +42,7 @@ public class EnemyDeckManager : MonoBehaviour
         float healthPercent = (float)health / max;
 
         //calculate random effect amount
-        int amount = Random.Range(3, 8);
+        int amount = Random.Range(4, 12);
 
         //calculate decision int
         int random = Random.Range(1, 3);

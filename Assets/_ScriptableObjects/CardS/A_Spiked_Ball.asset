@@ -17,9 +17,9 @@ MonoBehaviour:
   artwork: {fileID: 21300000, guid: da0fd20e2d9112c488446c66e2b89f7f, type: 3}
   cardAppearance: {fileID: 21300000, guid: 33f3aa84b4fc8c04cba1827a15485b1e, type: 3}
   manaCost: 4
-  attack: 3
+  attack: 8
   heal: 0
-  defend: 2
+  defend: 6
   turns: 1
   type1: 0
   type2: 2

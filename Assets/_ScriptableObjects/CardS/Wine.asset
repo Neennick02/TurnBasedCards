@@ -19,7 +19,7 @@ MonoBehaviour:
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 2
   attack: 0
-  heal: 6
+  heal: 7
   defend: 0
   turns: 1
   type1: 1

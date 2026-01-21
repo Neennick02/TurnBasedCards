@@ -10,7 +10,8 @@ public class ManaManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _manaCounter;
 
     public int CurrentMana;
-
+    public int MaxMana;
+    private int baseMana = 3;
     private void Start()
     {
         SetManaAmount(0);
@@ -18,8 +19,8 @@ public class ManaManager : MonoBehaviour
 
     public void SetManaAmount(int amount)
     {
-        CurrentMana = amount + stats.BaseManaAmount; 
-        stats.MaxMana = amount + stats.BaseManaAmount;
+        CurrentMana = amount + baseMana; 
+        MaxMana = amount + CurrentMana;
 
         _manaCounter.text = CurrentMana.ToString();
 
@@ -31,14 +32,13 @@ public class ManaManager : MonoBehaviour
          CurrentMana -= amount;
         _manaCounter.text = CurrentMana.ToString();
         StartCoroutine(DrainBar(CurrentMana, _manaBar));
-
     }
 
     public void ResetMana()
     {
-        stats.BaseManaAmount = 3;
-        DrainBar(stats.BaseManaAmount, _manaBar);
-        stats.MaxMana = stats.BaseManaAmount;
+        baseMana = 3;
+        MaxMana = baseMana;
+        DrainBar(baseMana, _manaBar);
     }
     private IEnumerator DrainBar(int targetMana, Image bar)
     {

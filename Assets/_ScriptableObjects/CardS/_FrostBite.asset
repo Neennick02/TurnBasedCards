@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: _FrostBite
   m_EditorClassIdentifier: 
   cardName: FrostBite
-  description: Deals 6 damage points in 1 turn.
+  description: Deals 9 damage points in 1 turn.
   artwork: {fileID: 21300000, guid: 479412ffc9d476b4f9c0d3d16b978587, type: 3}
   cardAppearance: {fileID: 21300000, guid: 43815734c9db6c341990e1d74135a5b3, type: 3}
-  manaCost: 4
-  attack: 6
+  manaCost: 3
+  attack: 9
   heal: 0
   defend: 0
   turns: 1
