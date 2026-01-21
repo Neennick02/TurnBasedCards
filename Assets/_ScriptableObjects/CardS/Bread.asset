@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bread
   m_EditorClassIdentifier: 
   cardName: Bread
-  description: Break the bread, Heal 8 points over 2 turns
+  description: Break the bread. Heals 10 points over 2 turns
   artwork: {fileID: 21300000, guid: 6ad547a7fe4008e4c8386120fdaeb847, type: 3}
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}
   manaCost: 6

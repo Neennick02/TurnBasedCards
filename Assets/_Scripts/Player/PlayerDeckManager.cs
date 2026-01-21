@@ -48,7 +48,7 @@ public class PlayerDeckManager : MonoBehaviour
                 cardsDrawn = true;
 
                 //use waitList
-                ProcessEffectOverTime();
+                StartCoroutine(ProcessEffectOverTime());
             }
 
             //check mouse hover 
@@ -130,7 +130,7 @@ public class PlayerDeckManager : MonoBehaviour
         RemoveCard(hit);
     }
 
-    public void ProcessEffectOverTime()
+    IEnumerator ProcessEffectOverTime()
     {
         //loop over effects que
         for (int i = activeOtEffects.Count - 1; i >= 0; i--)
@@ -138,6 +138,7 @@ public class PlayerDeckManager : MonoBehaviour
             OverTimeEffect dot = activeOtEffects[i].GetComponent<OverTimeEffect>();
             GameObject instance = activeOtEffects[i];
 
+            yield return new WaitForSeconds(0.5f);
             //apply damage
             switch (dot.Type) 
             {
@@ -201,6 +202,7 @@ public class PlayerDeckManager : MonoBehaviour
         Destroy(hit.transform.gameObject);
 
         //update hand
+        if(handManager.handCards.Count > 0)
         handManager.UpdateCardPositions();
     }
 

@@ -406,8 +406,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10.5
-  m_fontSizeBase: 10.5
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 14.467684, y: -7.4558945, z: 3.6301484, w: 10.916595}
+  m_margin: {x: 14.305669, y: -7.4558945, z: 3.5166311, w: 10.916595}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -582,8 +582,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10.5
-  m_fontSizeBase: 10.5
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -620,7 +620,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 15.003378, y: 10.171186, z: 3.6301484, w: -7.153126}
+  m_margin: {x: 14.698026, y: 10.171186, z: 3.088797, w: -7.153126}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -903,9 +903,10 @@ MonoBehaviour:
   damage: {fileID: 3887866999177012194}
   artwork: {fileID: 6499175767089707074}
   cardColor: {fileID: 223438166133419280}
-  hoverScale: 1.3
-  yOffset: 0.3
+  hoverScale: 1.5
+  yOffset: 0.5
   zOffset: 0.2
+  zoomed: 0
 --- !u!65 &4195983362313102282
 BoxCollider:
   m_ObjectHideFlags: 0

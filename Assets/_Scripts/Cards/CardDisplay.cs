@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -83,7 +84,8 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (zoomed) return;
-        Debug.Log("zoom");
+
+        transform.DOKill();
             originalScale = transform.localScale;
             originalPos = transform.localPosition;
 
@@ -101,7 +103,9 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!zoomed) return;
-            transform.localScale = originalScale;
+        transform.DOKill();
+
+        transform.localScale = originalScale;
             transform.localPosition = originalPos;
 
             sortingGroup.sortingOrder -= 100;

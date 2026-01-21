@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: A_Dagger
   m_EditorClassIdentifier: 
   cardName: Dagger
-  description: A low-cost weapon that deals 2 damage.
+  description: A low-cost weapon that deals 4 damage.
   artwork: {fileID: 21300000, guid: 76015419cd7c8114483a34ed9a1864e7, type: 3}
   cardAppearance: {fileID: 21300000, guid: 33f3aa84b4fc8c04cba1827a15485b1e, type: 3}
   manaCost: 1

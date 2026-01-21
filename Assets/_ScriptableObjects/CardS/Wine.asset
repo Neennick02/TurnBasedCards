@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wine
   m_EditorClassIdentifier: 
   cardName: Red Wine
-  description: A drink made of the blood of Christ. Use this card to restore 6 health
+  description: A drink made of the blood of Christ. Use this card to restore 7 health
     points.
   artwork: {fileID: 21300000, guid: 8430459352a10a441945804452d64425, type: 3}
   cardAppearance: {fileID: 21300000, guid: 9f17106f6438705429a5caa58bbddeaa, type: 3}

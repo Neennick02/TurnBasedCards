@@ -1038,6 +1038,7 @@ MonoBehaviour:
   _manaBar: {fileID: 1966136984}
   _manaCounter: {fileID: 129013968}
   CurrentMana: 0
+  MaxMana: 0
 --- !u!1 &201807557
 GameObject:
   m_ObjectHideFlags: 0
