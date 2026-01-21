@@ -199,7 +199,7 @@ public class TurnManager : MonoBehaviour
 
     public void ResetTurns()
     {
-        roundCounter = 0;
+        roundCounter = 1;
         CurrentPlayer = ActivePlayer.Player;
     }
 

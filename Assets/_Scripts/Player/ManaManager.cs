@@ -14,13 +14,14 @@ public class ManaManager : MonoBehaviour
     private int baseMana = 3;
     private void Start()
     {
+        MaxMana = stats.MaxMana;
         SetManaAmount(0);
     }
 
     public void SetManaAmount(int amount)
     {
         CurrentMana = amount + baseMana; 
-        MaxMana = amount + CurrentMana;
+        MaxMana = CurrentMana;
 
         _manaCounter.text = CurrentMana.ToString();
 
@@ -38,14 +39,15 @@ public class ManaManager : MonoBehaviour
     {
         baseMana = 3;
         MaxMana = baseMana;
-        DrainBar(baseMana, _manaBar);
+        _manaCounter.text = CurrentMana.ToString();
+        DrainBar(MaxMana, _manaBar);
     }
     private IEnumerator DrainBar(int targetMana, Image bar)
     {
         float timer = 0;
         float duration = 0.6f;
         float startAmount = bar.fillAmount;
-        float target = (float)targetMana / stats.MaxMana;
+        float target = (float)targetMana / MaxMana;
 
         while (timer < duration)
         {
