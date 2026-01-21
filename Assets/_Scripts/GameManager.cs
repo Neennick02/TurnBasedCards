@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Health playerHealth;
     [SerializeField] private Health enemyHealth;
     [SerializeField] private ManaManager ManaManager;
-     private TurnManager turnManager;
+    [SerializeField] private PlayerDeckManager PlayerDeckManager;
+
+    private TurnManager turnManager;
      private HandManager handManager;
      private DeckManager deckManager;
     private void Start()
@@ -21,20 +23,14 @@ public class GameManager : MonoBehaviour
         deckManager = GetComponent<DeckManager>();
     }
 
-    private void Update()
-    {
-
-    }
-
     public void StartNewFight()
     {
         StartCoroutine(ResetValues());
-
     }
 
     private void ResetPlayer()
     {
-        playerHealth.ResetHealth();
+        playerHealth.IncreaseHealthbarSize();
         ManaManager.ResetMana();
     }
     IEnumerator ResetValues()
@@ -68,5 +64,8 @@ public class GameManager : MonoBehaviour
 
         //refill deck
         deckManager.ResetDeck();
+
+        //remove pending effects
+        PlayerDeckManager.ResetList();
     }
 }

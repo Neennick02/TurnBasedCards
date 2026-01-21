@@ -50,23 +50,23 @@ public class EnemyDeckManager : MonoBehaviour
         //check health amount
         switch (healthPercent)
         {
-            case var expression when healthPercent > 80:// if higher that 80%
+            case var expression when healthPercent > .8:// if higher that 80%
                 Attack(amount); //always attack
                 break;
 
-            case var expression when healthPercent < 80 && healthPercent > 50:// if between 50% & 80%
+            case var expression when healthPercent < .8 && healthPercent > .5:// if between 50% & 80%
                 if (random == 1) Attack(amount); //random decision (33%)
                 if(random == 2) Heal(amount);
                 if(random == 3) Defend(amount);
                 break;
 
-            case var expression when healthPercent < 50 && healthPercent > 20:// if between 20% & 50%
+            case var expression when healthPercent < .5 && healthPercent > .2:// if between 20% & 50%
 
                 if (random >= 1 && random <= 2) Heal(amount); //heal 66% of the time
                 else Defend(amount);                          //defend 33%
                 break;
 
-            case var expression when healthPercent < 20 && healthPercent > 0:// if between 0% & 20%
+            case var expression when healthPercent < 0.2f && healthPercent > 0.0f:// if between 0% & 20%
                 Heal(amount); //always heal
                 break;
         }
@@ -88,27 +88,11 @@ public class EnemyDeckManager : MonoBehaviour
         remainingDamage -= absorbed;
 
         _healthScript.UpdateShield(_playerHealth.currentDefence);
-/*
-        //if player has more defence than damage
-        if (_playerHealth.currentDefence > damage)
-        {
 
-            damage -= _playerHealth.currentDefence;
-            damage = 0;
-        }
-        //if player has less defence than damage
-        else
-        {
-            _playerHealth.currentDefence -= damage;
-            _playerHealth.currentDefence = 0;
-        }
-
-        _healthScript.UpdateShield(_playerHealth.currentDefence);
-*/
         //if there is damage remaining
         if(remainingDamage > 0)
         {
-            _playerHealth.TakeDamage(-remainingDamage);
+            _playerHealth.TakeDamage(remainingDamage);
 
             //wait to sync with animation
             StartCoroutine(Wait(0.9f));

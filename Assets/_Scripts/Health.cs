@@ -16,9 +16,6 @@ public class Health : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private TextMeshProUGUI shieldCounter;
 
-    [Header("Que for pending effects")]
-    public List<GameObject> activeDotEffects = new List<GameObject>();
-
     [Header("Links to scripts")] 
 
     [SerializeField] CharacterAnimator characterAnimator;
@@ -71,17 +68,13 @@ public class Health : MonoBehaviour
         UpdateShield(currentDefence);
     }
 
-    public void ResetHealth()
+    public void IncreaseHealthbarSize()
     {
         //add extra max health on second fight
         if (this.gameObject.CompareTag("Player"))
         {
             statsObjects[0].MaxHealth += 10;
         }
-
-       currentHealth = statsObjects[currentEnemy].MaxHealth;
-
-       currentDefence = 0;
     }
 
     public void EnableNewCharacterStats()
@@ -95,6 +88,8 @@ public class Health : MonoBehaviour
 
         //reset shield
         UpdateShield(0);
+
+        isDead = false;
     }
     public void UpdateShield(int amount)
     {
@@ -146,9 +141,13 @@ public class Health : MonoBehaviour
             turnManager.OpenLoseScreen();
         }
         //if Ai open win screen
-        else
+        else if(this.gameObject.CompareTag("Enemy"))
         {
             turnManager.OpenWinScreen();
+        }
+        else if (currentEnemy >= 3)
+        {
+            turnManager.OpenFinalWinScreen();
         }
     }
 }

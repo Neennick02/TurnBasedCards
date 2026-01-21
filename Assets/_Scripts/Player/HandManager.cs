@@ -91,9 +91,15 @@ public class HandManager : MonoBehaviour
     }
     public void ResetHand()
     {
+        //destroy all cards
+        for(int i = 0; i < handCards.Count; i++)
+        {
+            Destroy(handCards[i]);
+        }
+
         //remove all cards from hand
         handCards.Clear();
-
+        
         //pick new cards
         StartCoroutine(DrawCardsRoutine());
     }

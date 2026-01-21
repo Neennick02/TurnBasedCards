@@ -17,9 +17,9 @@ public class ScreenLoopUI : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
     }
-    public void OpenSecondFightScene()
+    public void OpenCredits()
     {
-        SceneManager.LoadScene("MainScene2");
+        SceneManager.LoadScene("Credits");
     }
     public void QuitGame()
     {

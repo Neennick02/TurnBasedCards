@@ -2,6 +2,7 @@ using DG.Tweening;
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,8 +19,11 @@ public class PlayerDeckManager : MonoBehaviour
     [SerializeField] private TurnManager turnManager;
     [SerializeField] private HandManager handManager;
     [SerializeField] private ManaManager manaManager;
-    [SerializeField] private GameObject dotPrefab;
     [SerializeField] private CharacterAnimator animator;
+
+    [Header("Que for pending effects")]
+    public List<GameObject> activeOtEffects = new List<GameObject>();
+    [SerializeField] private GameObject dotPrefab;
 
     [Header("Particle Effects")]
     [SerializeField] private GameObject healParticles, shieldParticles, attackParticles;
@@ -73,7 +77,7 @@ public class PlayerDeckManager : MonoBehaviour
     private void UseCard(CardScriptableObject card, RaycastHit hit)
     {
         //check mana 
-        if (card.manaCost > manaManager.stats.CurrentMana) return;
+        if (card.manaCost > manaManager.CurrentMana) return;
 
         manaManager.DrainMana(card.manaCost);
 
@@ -119,7 +123,7 @@ public class PlayerDeckManager : MonoBehaviour
         //check if card is used in more than 1 round
         if(card.turns > 1)
         {
-            AddDamageOverTime(effectAmount , card.turns - 1, card.type1);
+            AddEffectOverTime(effectAmount , card.turns - 1, card.type1);
         }
 
         //removes card from hand
@@ -129,10 +133,10 @@ public class PlayerDeckManager : MonoBehaviour
     public void ProcessEffectOverTime()
     {
         //loop over effects que
-        for (int i = enemyHealth.activeDotEffects.Count - 1; i >= 0; i--)
+        for (int i = activeOtEffects.Count - 1; i >= 0; i--)
         {
-            OverTimeEffect dot = enemyHealth.activeDotEffects[i].GetComponent<OverTimeEffect>();
-            GameObject instance = enemyHealth.activeDotEffects[i];
+            OverTimeEffect dot = activeOtEffects[i].GetComponent<OverTimeEffect>();
+            GameObject instance = activeOtEffects[i];
 
             //apply damage
             switch (dot.Type) 
@@ -155,13 +159,13 @@ public class PlayerDeckManager : MonoBehaviour
             //remove from list
             if (dot.remainingTurns <= 0)
             {
-                enemyHealth.activeDotEffects.RemoveAt(i);
+                activeOtEffects.RemoveAt(i);
                 Destroy(instance);
             }
         }
     }
 
-    private void AddDamageOverTime(int amount, int turns, CardScriptableObject.Type type)
+    private void AddEffectOverTime(int amount, int turns, CardScriptableObject.Type type)
     {
         GameObject dotInstance = Instantiate(dotPrefab, transform.position, transform.rotation);
         OverTimeEffect dot = dotInstance.GetComponent<OverTimeEffect>();
@@ -173,19 +177,19 @@ public class PlayerDeckManager : MonoBehaviour
             case CardScriptableObject.Type.Damage:
                 dot.Type = OverTimeEffect.EffectType.Attack;
                 //add to enemy list
-                enemyHealth.activeDotEffects.Add(dotInstance);
+                activeOtEffects.Add(dotInstance);
                 break;
 
                 case CardScriptableObject.Type.Defend:
                 dot.Type = OverTimeEffect.EffectType.Defend;
                 //add to player list
-                enemyHealth.activeDotEffects.Add(dotInstance);
+                activeOtEffects.Add(dotInstance);
                 break;
 
                 case CardScriptableObject.Type.Heal:
                 dot.Type = OverTimeEffect.EffectType.Heal;
                 //add to player list
-                enemyHealth.activeDotEffects.Add(dotInstance);
+                activeOtEffects.Add(dotInstance);
                 break;
         }
     }
@@ -198,6 +202,15 @@ public class PlayerDeckManager : MonoBehaviour
 
         //update hand
         handManager.UpdateCardPositions();
+    }
+
+    public void ResetList()
+    {
+        for(int i = 0; i < activeOtEffects.Count; i++)
+        {
+            Destroy(activeOtEffects[i]);
+        }
+        activeOtEffects.Clear();
     }
     private void Attack(int damage)
     {
@@ -215,7 +228,7 @@ public class PlayerDeckManager : MonoBehaviour
         //if there is damage remaining
         if (remainingDamage > 0)
         {
-            enemyHealth.TakeDamage(-remainingDamage);
+            enemyHealth.TakeDamage(remainingDamage);
 
             //wait to sync with animation
             StartCoroutine(AttackParticlesRoutine(0.9f));

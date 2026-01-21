@@ -10,8 +10,9 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _activePlayer;
     [SerializeField] private ManaManager _manaManager;
 
+    [Header("Ui Elements")]
     [SerializeField] private GameObject PlayerTurnText, AiTurnText;
-
+    [SerializeField] private GameObject FinalWinScreen;
     [SerializeField] private GameObject WinScreen;
     [SerializeField] private GameObject LoseScreen;
     public ActivePlayer CurrentPlayer { get; private set; }
@@ -43,6 +44,7 @@ public class TurnManager : MonoBehaviour
 
         //disable end screens
         WinScreen.SetActive(false);
+        FinalWinScreen.SetActive(false);
         LoseScreen.SetActive(false);
 
         //disable pause screen
@@ -200,7 +202,10 @@ public class TurnManager : MonoBehaviour
     {
         WinScreen.SetActive(true);  
     }
-
+    public void OpenFinalWinScreen()
+    {
+        FinalWinScreen.SetActive(true);
+    }
     public void OpenLoseScreen()
     {
         LoseScreen.SetActive(true);
