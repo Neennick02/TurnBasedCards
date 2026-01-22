@@ -12,9 +12,6 @@ public class DisplayDeck : MonoBehaviour
 
     public int colomnCount = 3;
 
-    Rigidbody rb;
-    [SerializeField] private float moveSpeed;
-
     private void Start()
     {
         for(int i = 0; i < cards.Count; i++)
@@ -35,15 +32,5 @@ public class DisplayDeck : MonoBehaviour
 
             cardDataScript.SetCustomData(cardSO);
         }
-
-        rb = GetComponent<Rigidbody>();
-
-        rb.AddForce(new Vector3(0, 3, 0), ForceMode.Force);
-    }
-
-    private void Update()
-    {
-        float newY = transform.position.y - (Input.mouseScrollDelta.y * moveSpeed);
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 }

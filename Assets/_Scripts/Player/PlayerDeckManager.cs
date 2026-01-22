@@ -27,7 +27,13 @@ public class PlayerDeckManager : MonoBehaviour
 
     [Header("Particle Effects")]
     [SerializeField] private GameObject healParticles, shieldParticles, attackParticles;
-
+    
+    [Header("Sound Effects")]
+    [SerializeField] private List<AudioClip> selectCard = new();
+    [SerializeField] private List<AudioClip> discardCard = new();
+    [SerializeField] private List<AudioClip> healSounds = new();
+    [SerializeField] private List<AudioClip> attackSounds = new();
+    [SerializeField] private List<AudioClip> shieldSounds = new();
     private bool cardsDrawn;
     private void Start()
     {
@@ -62,12 +68,14 @@ public class PlayerDeckManager : MonoBehaviour
 
                 //on left click use card
                 if (Input.GetMouseButtonDown(0))
-                { 
+                {
+                    AudioManager.Instance.PlayClip(selectCard);
                     UseCard(currentCard, hit);
                 }
                 //on right click discard card
                 else if(Input.GetMouseButton(1))
                 {
+                    AudioManager.Instance.PlayClip(discardCard);
                     RemoveCard(hit);
                 }
             }
@@ -76,6 +84,8 @@ public class PlayerDeckManager : MonoBehaviour
 
     private void UseCard(CardScriptableObject card, RaycastHit hit)
     {
+        AudioManager.Instance.PlayClip(handManager.cardPickupSound);
+
         //check mana 
         if (card.manaCost > manaManager.CurrentMana) return;
 
@@ -219,6 +229,9 @@ public class PlayerDeckManager : MonoBehaviour
         //play animation
         animator.AttackAnimation();
 
+        //play sound
+        AudioManager.Instance.PlayClip(attackSounds);
+
         int remainingDamage = damage;
 
         int absorbed = Mathf.Min(enemyHealth.currentDefence, remainingDamage);
@@ -248,6 +261,9 @@ public class PlayerDeckManager : MonoBehaviour
         animator.HealAnimation();
         Instantiate(healParticles, transform);
 
+        //play sound
+        AudioManager.Instance.PlayClip(healSounds);
+
         playerHealth.Heal(healAmount);
         healthPopup = GetComponent<HealthPopup>();
         healthPopup.Create(transform.position, healAmount, false);
@@ -255,6 +271,9 @@ public class PlayerDeckManager : MonoBehaviour
 
     public void Defend(int amount)
     {
+        //play sound
+        AudioManager.Instance.PlayClip(shieldSounds);
+
         animator.SpellAnimation();
         Instantiate(shieldParticles, new Vector3(
             transform.position.x, 

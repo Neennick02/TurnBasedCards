@@ -14,8 +14,9 @@ public class HandManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
 
     [SerializeField] public List<GameObject> handCards = new();
+    [SerializeField] public List<AudioClip> cardPickupSound = new();
 
-    
+
     private void Start()
     {
         splineContainer = GetComponentInChildren<SplineContainer>();
@@ -35,6 +36,9 @@ public class HandManager : MonoBehaviour
         {
             GameObject g = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation);
             g.transform.SetParent(splineContainer.transform);
+
+            //play sound
+            AudioManager.Instance.PlayClip(cardPickupSound);
 
             //add to hand list
             handCards.Add(g);

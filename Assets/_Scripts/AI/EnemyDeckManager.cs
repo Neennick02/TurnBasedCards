@@ -16,6 +16,11 @@ public class EnemyDeckManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI shieldCounter;
 
     [SerializeField] private GameObject HealParticles, DefendParticles, attackParticles;
+
+    [SerializeField] private List<AudioClip> healSounds = new();
+    [SerializeField] private List<AudioClip> attackSounds = new();
+    [SerializeField] private List<AudioClip> shieldSounds = new();
+
     private void Start()
     {
         _healthScript = GetComponent<Health>();
@@ -81,6 +86,9 @@ public class EnemyDeckManager : MonoBehaviour
         //play animation
         characterAnimator.AttackAnimation();
 
+        //play sound
+        AudioManager.Instance.PlayClip(attackSounds);
+
         int remainingDamage = damage;
 
         int absorbed = Mathf.Min(_playerHealth.currentDefence, remainingDamage);
@@ -109,6 +117,9 @@ public class EnemyDeckManager : MonoBehaviour
         characterAnimator.HealAnimation();
         Instantiate(HealParticles, transform);
 
+        //play sound
+        AudioManager.Instance.PlayClip(healSounds);
+
         _healthScript.Heal(amount);
 
         healthPopup.Create(transform.position, amount, false);
@@ -116,6 +127,9 @@ public class EnemyDeckManager : MonoBehaviour
 
     private void Defend(int amount)
     {
+        //play sound
+        AudioManager.Instance.PlayClip(shieldSounds);
+
         _healthScript.AddShield(amount);
     }
     IEnumerator Wait(float time)

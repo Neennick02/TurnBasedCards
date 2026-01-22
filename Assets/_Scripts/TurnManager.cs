@@ -19,6 +19,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private GameObject LoseScreen;
     public ActivePlayer CurrentPlayer { get; private set; }
 
+    [SerializeField] private List<AudioClip> changeTurnSounds = new List<AudioClip>();
     public enum ActivePlayer
     {
         Player,
@@ -100,7 +101,7 @@ public class TurnManager : MonoBehaviour
     }
     public void ChangeTurn()
     {
-
+        AudioManager.Instance.PlayClip(changeTurnSounds);
         //change turn
         if (CurrentPlayer == ActivePlayer.Player) CurrentPlayer = ActivePlayer.Ai;
         else CurrentPlayer = ActivePlayer.Player;

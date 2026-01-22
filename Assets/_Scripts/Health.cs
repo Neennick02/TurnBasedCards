@@ -23,6 +23,10 @@ public class Health : MonoBehaviour
     [SerializeField] GameObject deathParticles;
     [SerializeField] TurnManager turnManager;
 
+    [SerializeField] private List<AudioClip> MonsterDeathSounds = new List<AudioClip>();
+    [SerializeField] private List<AudioClip> HumanDeathSounds = new List<AudioClip>();
+    [SerializeField] private List<AudioClip> WomanDeathSounds = new List<AudioClip>();
+
     private bool isDead = false;
     private void Start()
     {
@@ -102,6 +106,26 @@ public class Health : MonoBehaviour
 
     public void HandleDeath()
     {
+        //player death sound
+        if(transform.CompareTag("Enemy"))
+        {
+            if(currentEnemy < 1)
+            {
+                //woman sound
+                AudioManager.Instance.PlayClip(WomanDeathSounds);
+            }
+            else
+            {
+                //monster sound
+                AudioManager.Instance.PlayClip(MonsterDeathSounds);
+            }
+        }
+        else
+        {
+            //human sound
+            AudioManager.Instance.PlayClip(HumanDeathSounds);
+        }
+
         //play death animation
         characterAnimator.DeathAnimation();
         Instantiate(deathParticles, transform);
