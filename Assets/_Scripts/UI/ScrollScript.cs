@@ -6,18 +6,15 @@ public class ScrollScript : MonoBehaviour
     [SerializeField] private float scrollSpeed;
     private void Update()
     {
-        if (Input.mouseScrollDelta.y < 0 || Input.mouseScrollDelta.y > 0)
+        float scroll = Input.mouseScrollDelta.y;
+
+        if (scroll != 0f)
         {
-            float newY = transform.position.y - (Input.mouseScrollDelta.y * moveSpeed);
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            transform.position += Vector3.up * (-scroll * moveSpeed * Time.deltaTime);
         }
         else
         {
-            transform.position = new Vector3(
-                transform.position.x,
-                transform.position.y + scrollSpeed,
-                transform.position.z);
+            transform.position += Vector3.up * (scrollSpeed * Time.deltaTime);
         }
-
     }
 }

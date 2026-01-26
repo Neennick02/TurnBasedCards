@@ -650,7 +650,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -191.87366}
+  m_AnchoredPosition: {x: 0, y: -658.48}
   m_SizeDelta: {x: 1000, y: 433.7473}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1069353999
@@ -665,8 +665,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120471f96c9eee645b9043623b7f3feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  scrollSpeed: 0.2
+  moveSpeed: 1500
+  scrollSpeed: 80
 --- !u!114 &1069354000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,10 +687,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Thank You So Much For Playing <3\nThis game was made for a school project.\nFeel
-    free to leave review.\n\n\nYannick Garbe - Developer\n\n-----------------------------\n3rd
-    Party Assets\n-----------------------------\n\nCharacter Models - Mixamo\nCharacter
-    Animations - Mixamo\n\n\nPixabay Sounds:\n-----------------------------\n\r\nMain
+  m_text: "Thank You So Much For Playing <3\nFeel free to leave review!\n\n\nYannick
+    Garbe - Developer\n\n-----------------------------\n3rd Party Assets\n-----------------------------\n\nCharacter
+    Models - Mixamo\nCharacter Animations - Mixamo\n\n\nPixabay Sounds:\n-----------------------------\n\r\nMain
     music - tunetank\n\r\nStart/ credit music - tunetank\r\n\r\nCard sound effect
     - freesound_community \r\n\r\nHit sound   \r                  - freesound_community\r\n                 
     - VoiceBosch \n                  - DavidDumaisAudio \r\n\r\nDeath sound -\r                        
