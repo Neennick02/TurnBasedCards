@@ -38,14 +38,18 @@ public class ManaManager : MonoBehaviour
     public void ResetMana()
     {
         baseMana = 3;
+        CurrentMana = baseMana;
         MaxMana = baseMana;
+
         _manaCounter.text = CurrentMana.ToString();
-        DrainBar(MaxMana, _manaBar);
+
+        StopAllCoroutines();
+        StartCoroutine(DrainBar(CurrentMana, _manaBar));
     }
     private IEnumerator DrainBar(int targetMana, Image bar)
     {
         float timer = 0;
-        float duration = 0.6f;
+        float duration = 1.2f;
         float startAmount = bar.fillAmount;
         float target = (float)targetMana / MaxMana;
 

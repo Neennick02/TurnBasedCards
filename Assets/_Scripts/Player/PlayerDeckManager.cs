@@ -69,13 +69,23 @@ public class PlayerDeckManager : MonoBehaviour
                 //on left click use card
                 if (Input.GetMouseButtonDown(0))
                 {
-                    AudioManager.Instance.PlayClip(selectCard);
-                    UseCard(currentCard, hit);
+                    //check mana cost
+                    if(currentCard.manaCost <= manaManager.CurrentMana)
+                    {
+                        manaManager.DrainMana(currentCard.manaCost);
+                        UseCard(currentCard, hit);
+                        RemoveCard(hit);
+                    }
+                    else
+                    {
+                        //play error sound
+                        AudioManager.Instance.PlayClip(discardCard, 3);
+                    }
                 }
                 //on right click discard card
                 else if(Input.GetMouseButton(1))
                 {
-                    AudioManager.Instance.PlayClip(discardCard);
+                    AudioManager.Instance.PlayClip(discardCard, 3);
                     RemoveCard(hit);
                 }
             }
@@ -84,60 +94,53 @@ public class PlayerDeckManager : MonoBehaviour
 
     private void UseCard(CardScriptableObject card, RaycastHit hit)
     {
-        AudioManager.Instance.PlayClip(handManager.cardPickupSound);
+       // AudioManager.Instance.PlayClip(handManager.cardPickupSound);
+        AudioManager.Instance.PlayClip(selectCard);
 
-        //check mana 
-        if (card.manaCost > manaManager.CurrentMana) return;
-
-        manaManager.DrainMana(card.manaCost);
-
-        int effectAmount = 0; //amount used if card is active for > 1 round
+            int effectAmount = 0; //amount used if card is active for > 1 round
 
 
-        //first card effect
-        switch (card.type1) 
-        {
-            case CardScriptableObject.Type.Damage:
-                Attack(card.attack);
-                effectAmount = card.attack;
+            //first card effect
+            switch (card.type1)
+            {
+                case CardScriptableObject.Type.Damage:
+                    Attack(card.attack);
+                    effectAmount = card.attack;
 
-                break;
-            case CardScriptableObject.Type.Heal:
-                Heal(card.heal);
-                effectAmount = card.heal;
-                break;
+                    break;
+                case CardScriptableObject.Type.Heal:
+                    Heal(card.heal);
+                    effectAmount = card.heal;
+                    break;
 
-            case CardScriptableObject.Type.Defend:
-                Defend(card.defend);
-                effectAmount = card.defend;
-                break;
-        }
+                case CardScriptableObject.Type.Defend:
+                    Defend(card.defend);
+                    effectAmount = card.defend;
+                    break;
+            }
 
-        //second effect
-        switch (card.type2)
-        {
-            case CardScriptableObject.Type.None:
-                break;
-            case CardScriptableObject.Type.Damage:
-                Attack(card.attack);
+            //second effect
+            switch (card.type2)
+            {
+                case CardScriptableObject.Type.None:
+                    break;
+                case CardScriptableObject.Type.Damage:
+                    Attack(card.attack);
 
-                break;
-            case CardScriptableObject.Type.Heal:
-                Heal(card.heal);
-                break;
-            case CardScriptableObject.Type.Defend:
-                Defend(card.defend);
-                break;
-        }
+                    break;
+                case CardScriptableObject.Type.Heal:
+                    Heal(card.heal);
+                    break;
+                case CardScriptableObject.Type.Defend:
+                    Defend(card.defend);
+                    break;
+            }
 
-        //check if card is used in more than 1 round
-        if(card.turns > 1)
-        {
-            AddEffectOverTime(effectAmount , card.turns - 1, card.type1);
-        }
-
-        //removes card from hand
-        RemoveCard(hit);
+            //check if card is used in more than 1 round
+            if (card.turns > 1)
+            {
+                AddEffectOverTime(effectAmount, card.turns - 1, card.type1);
+            }
     }
 
     IEnumerator ProcessEffectOverTime()
