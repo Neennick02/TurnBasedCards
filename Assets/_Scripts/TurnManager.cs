@@ -202,6 +202,7 @@ public class TurnManager : MonoBehaviour
     {
         roundCounter = 1;
         CurrentPlayer = ActivePlayer.Player;
+        counterText.text = "Round  " + roundCounter.ToString();
     }
 
     public void OpenWinScreen()

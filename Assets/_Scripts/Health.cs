@@ -168,7 +168,7 @@ public class Health : MonoBehaviour
             turnManager.OpenLoseScreen();
         }
         //if Ai open win screen
-        else if(this.gameObject.CompareTag("Enemy") && currentEnemy < 1)
+        else if(this.gameObject.CompareTag("Enemy") && currentEnemy < 2)
         {
             turnManager.OpenWinScreen();
         }

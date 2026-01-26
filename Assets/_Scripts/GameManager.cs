@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator ResetValues()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
         FightCount++;
 
         //enable cards

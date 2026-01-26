@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7921569, g: 0.7607843, b: 0.654902, a: 1}
+  m_Color: {r: 0.9490196, g: 0.8, b: 0.5568628, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -687,7 +687,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Thank You So Much For Playing <3\nFeel free to leave review!\n\n\nYannick
+  m_text: "Thank You So Much For Playing <3\nFeel free to leave a review!\n\n\nYannick
     Garbe - Developer\n\n-----------------------------\n3rd Party Assets\n-----------------------------\n\nCharacter
     Models - Mixamo\nCharacter Animations - Mixamo\n\n\nPixabay Sounds:\n-----------------------------\n\r\nMain
     music - tunetank\n\r\nStart/ credit music - tunetank\r\n\r\nCard sound effect
@@ -899,7 +899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b16a2aa4a13b6d4897ea8afa4c340fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickSounds: []
+  clickSounds:
+  - {fileID: 8300000, guid: 38bda4a945aa55e449bfe69f81dc5bfa, type: 3}
 --- !u!1 &1471209052
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9490196, g: 0.8, b: 0.5568628, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
